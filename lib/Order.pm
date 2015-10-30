@@ -30,11 +30,32 @@ sub new {
     $this->{'description'} = $description;
     $this->{'package_number'} = $package_number;
     $this->{'state'} = undef;
-    sthis->{'package_list'} = [];
+    $this->{'package_list'} = [];
     
     return $this;
 }
 
+sub get_user_id {
+    return shift->{'user_id'};
+}
+
+sub get_number {
+    return shift->{'number'};
+}
+
+sub get_description {
+    return shift->{'description'};
+}
+
+sub get_state {
+    return shift->{'state'};
+}
+
+sub set_state{
+    $this = shift;
+    $state = shift;
+    $this->{'state'} = $state;
+}
 sub add_package {
     my $this = shift;
     my $new_package = shift;
@@ -43,7 +64,7 @@ sub add_package {
 }
 
 sub get_package_list {
-    return shift->{ṕackage_list};
+    return shift->{'package_list'};
 }
 
 1;
