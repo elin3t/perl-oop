@@ -16,7 +16,6 @@ sub to_test {
     return "ok!";
 }
 
-use Data::Dumper;
 use Test::More;
 use lib '../lib';
 use Package;
