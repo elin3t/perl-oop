@@ -20,7 +20,12 @@ sub add{
 sub delete{
     my $self = shift;
     my $key = shift;
-    delete $self->{items}{$key};
+    my $result = delete $self->{items}{$key};
+    if ($result) {
+        return $result;
+    } else {
+        return -1;
+    }
 }
 
 sub find{
