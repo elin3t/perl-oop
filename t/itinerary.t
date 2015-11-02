@@ -8,7 +8,6 @@ use lib '../lib';
 use Itinerary;
 
 my $date  = localtime();
-say $date;
 
 my $itinerary = Itinerary->new('12345678','Montevideo',$date,'Dell XPS 9530');
 
