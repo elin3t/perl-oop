@@ -32,6 +32,11 @@ my $orderFinded = $orderRepository->find('the_number');
 
 is($orderFinded->{number}, 'the_number', 'Can add order');
 
+my $orderRepository2 = OrderHashRepository->new();
+my $orderFinded1 = $orderRepository2->find('the_number');
+
+is($orderFinded1->{number}, 'the_number', 'Check Singleton Works');
+
 my $orderDeleted = $orderRepository->delete($order->number);
 
 is($orderDeleted, 1, 'Can delete order');
@@ -39,6 +44,8 @@ is($orderDeleted, 1, 'Can delete order');
 $orderFinded = $orderRepository->find('the_number');
 
 is($orderFinded, 0, 'Can delete order');
+
+my $orderRepository2 = OrderHashRepository->new();
 
 done_testing();
 
