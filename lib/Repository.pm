@@ -22,9 +22,9 @@ sub delete{
     my $key = shift;
     my $result = delete $self->{items}{$key};
     if ($result) {
-        return $result;
+        return 1;
     } else {
-        return -1;
+        return 0;
     }
 }
 
@@ -35,7 +35,7 @@ sub find{
         return $self->{items}{$key};
     }
     else {
-        return -1;
+        return 0;
     }
 }
 

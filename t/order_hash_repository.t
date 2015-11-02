@@ -32,13 +32,13 @@ my $orderFinded = $orderRepository->find('the_number');
 
 is($orderFinded->{number}, 'the_number', 'Can add order');
 
-my $orderDeleted = $orderRepository->delete($order);
+my $orderDeleted = $orderRepository->delete($order->number);
 
-is($orderDeleted->{number}, 'the_number', 'Can delete order');
+is($orderDeleted, 1, 'Can delete order');
 
 $orderFinded = $orderRepository->find('the_number');
 
-is($orderFinded, -1, 'Can delete order');
+is($orderFinded, 0, 'Can delete order');
 
 done_testing();
 

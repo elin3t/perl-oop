@@ -14,10 +14,4 @@ sub add{
     return $self->SUPER::add($user->username, $user);
 }
 
-sub delete{
-    my $self = shift;
-    my $user = shift;
-
-    return $self->SUPER::delete($user->username);
-}
 1;

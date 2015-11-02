@@ -32,13 +32,13 @@ my $userFinded = $userRepository->find('the_username');
 
 is($userFinded->{username}, 'the_username', 'Can add user');
 
-my $userDeleted = $userRepository->delete($user);
+my $userDeleted = $userRepository->delete($user->username);
 
-is($userDeleted->{username}, 'the_username', 'Can delete user');
+is($userDeleted, 1, 'Can delete user');
 
 $userFinded = $userRepository->find('the_username');
 
-is($userFinded, -1, 'Can delete user');
+is($userFinded, 0, 'Can delete user');
 
 done_testing();
 

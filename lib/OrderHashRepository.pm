@@ -13,11 +13,4 @@ sub add{
 
     return $self->SUPER::add($order->number, $order);
 }
-
-sub delete{
-    my $self = shift;
-    my $order = shift;
-
-    return $self->SUPER::delete($order->number);
-}
 1;
