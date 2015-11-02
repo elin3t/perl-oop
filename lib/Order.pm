@@ -33,7 +33,7 @@ sub new {
     $self->{'package_number'} = $package_number;
    # use enum qw (hola mundhola mundoo);
    # say hola;
-    $self->{'state'} = 0;#Pending
+    $self->{'state'} = "Pendiente";#Pending
     $self->{'package_list'} = [];
     
     return $self;
