@@ -6,6 +6,16 @@ package UserHashRepository;
 
 
 our @ISA = qw(Repository);
+my $singlenton;
+
+sub new {
+    my $class = shift;
+    my $self = {
+        items=> {}
+    };
+    $singlenton ||= bless $self, $class;
+    return $singlenton;
+}
 
 sub add{
     my $self = shift;
