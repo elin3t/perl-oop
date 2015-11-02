@@ -11,6 +11,5 @@ use Command;
 
 my $command = Command->new;
 dies_ok{$command->execute()};
-dies_ok{$command->validate()};
 
 done_testing();
