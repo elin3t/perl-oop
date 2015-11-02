@@ -11,6 +11,11 @@ sub add{
     my $self = shift;
     my $order = shift;
 
-    return $self->SUPER::add($order->number, $order);
+    if ($self->SUPER::find($order->number)) {
+        return 0
+    } else {
+        $self->SUPER::add($order->number, $order);
+        return 1;
+    }
 }
 1;
