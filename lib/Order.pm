@@ -64,7 +64,7 @@ sub add_package {
     my $self = shift;
     my $new_package = shift;
 #    print Dumper \$new_package;
-    push @{$self->{'package_list'}}, $new_package;
+    push $self->{'package_list'}, $new_package;
 }
 
 sub package_list {
