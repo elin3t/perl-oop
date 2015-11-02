@@ -31,8 +31,6 @@ sub new {
     $self->{'number'} = $number;     
     $self->{'description'} = $description;
     $self->{'package_number'} = $package_number;
-   # use enum qw (hola mundhola mundoo);
-   # say hola;
     $self->{'state'} = "Pendiente";#Pending
     $self->{'package_list'} = [];
     
@@ -63,7 +61,6 @@ sub set_state{
 sub add_package {
     my $self = shift;
     my $new_package = shift;
-#    print Dumper \$new_package;
     push $self->{'package_list'}, $new_package;
 }
 
