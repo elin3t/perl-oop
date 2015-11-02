@@ -18,6 +18,15 @@
 use strict;
 use warnings;
 use v5.18;
+use AddUserCmd;
+use DelUserCmd;
+use PurchaseCmd;
+use PostaPkgCmd;
+use DispatchCmd;
+use ReceptionCmd;
+use StateOrderCmd;
+use ItineraryCmd;
+use Error;
 
 package Handler;
 
@@ -49,40 +58,41 @@ sub command_factory {
    
     given(shift @parameters){
         when (/A/){
-            $command = ;
+            $command = AddUserCmd->new();
             push $self->{'commands'}, $command;
         }
         when (/E/){
-            $command = ;         
+            $command = DelUserCmd->new();         
             push $self->{'commands'}, $command;
         }
         when (/C/){
-            $command = ;   
+           $command = PurchaseCmd->new(); 
             push $self->{'commands'}, $command;
         }
         when (/D/){
-            $command = ; 
+            $command = DispatchCmd->new();
             push $self->{'commands'}, $command;
         }
         when (/P/){
-            $command = ;
+            $command = PostaPkgCmd->new();
             push $self->{'commands'}, $command;
         }
         when (/R/){
-            $command = ;    
+            $command = ReceptionCmd->new();    
             push $self->{'commands'}, $command;
         }
         when (/Y/){
-            $command = ;
+            $command = StateOrderCmd->new();
             push $self->{'commands'}, $command;
         }
         when (/Z/){
-            $command = ;    
+            $command = ItineraryCmd->new();    
             push $self->{'commands'}, $command;
         }
 
         default{
-            
+            my $error = Error->new("Error al parsear: ".$line);
+            push $self->{'errors'}, $error;
         }
     }   
       return $command;
@@ -108,7 +118,7 @@ sub print_errors {
     my @list =  @{$self->{'errors'}};
     
     for my $error (@list){
-        say $error->get_output();
+        die $error->get_output();
     }
 }
 
