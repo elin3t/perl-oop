@@ -32,6 +32,12 @@ my $userFinded = $userRepository->find('the_username');
 
 is($userFinded->{username}, 'the_username', 'Can add user');
 
+my $userRepository2 = UserHashRepository->new();
+
+my $userFinded1 = $userRepository2->find('the_username');
+
+is($userFinded1->{username}, 'the_username', 'Check singleton works');
+
 my $userDeleted = $userRepository->delete($user->username);
 
 is($userDeleted, 1, 'Can delete user');
