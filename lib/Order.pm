@@ -17,53 +17,55 @@
 
 use strict;
 use warnings;
- 
+use v5.18; 
 package Order;
 
 sub new {
-    my $class = shift;a
+    my $class = shift;
     my ($user_id, $number, $description, $package_number) = @_; #order se construye con estos parametros.
-    my $this = bless {}, $class;
+    my $self = bless {}, $class;
 
-    $this->{'user_id'} = $user_id;
-    $this->{'number'} = $number;     
-    $this->{'description'} = $description;
-    $this->{'package_number'} = $package_number;
-    $this->{'state'} = undef;
-    $this->{'package_list'} = [];
+    $self->{'user_id'} = $user_id;
+    $self->{'number'} = $number;     
+    $self->{'description'} = $description;
+    $self->{'package_number'} = $package_number;
+   # use enum qw (hola mundhola mundoo);
+   # say hola;
+    $self->{'state'} = 0;#Pending
+    $self->{'package_list'} = [];
     
-    return $this;
+    return $self;
 }
 
-sub get_user_id {
+sub user_id {
     return shift->{'user_id'};
 }
 
-sub get_number {
+sub number {
     return shift->{'number'};
 }
 
-sub get_description {
+sub description {
     return shift->{'description'};
 }
 
-sub get_state {
+sub state {
     return shift->{'state'};
 }
 
 sub set_state{
-    $this = shift;
-    $state = shift;
-    $this->{'state'} = $state;
+    my $self = shift;
+    my $state = shift;
+    $self->{'state'} = $state;
 }
 sub add_package {
-    my $this = shift;
+    my $self = shift;
     my $new_package = shift;
-    my $package_list = $this->{'package_list'};
-    push $package_list, $new_package;
+    my @package_list = ;
+    push @{$self->{'package_list'}}, $new_package;
 }
 
-sub get_package_list {
+sub package_list {
     return shift->{'package_list'};
 }
 
