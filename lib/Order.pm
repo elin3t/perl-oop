@@ -18,6 +18,8 @@
 use strict;
 use warnings;
 use v5.18; 
+use Data::Dumper;
+
 package Order;
 
 sub new {
@@ -61,11 +63,12 @@ sub set_state{
 sub add_package {
     my $self = shift;
     my $new_package = shift;
+#    print Dumper \$new_package;
     push @{$self->{'package_list'}}, $new_package;
 }
 
 sub package_list {
-    return shift->{'package_list'};
+    return @{shift->{'package_list'}};
 }
 
 1;
