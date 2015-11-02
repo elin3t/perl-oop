@@ -2,7 +2,7 @@ package UserService;
 use strict;
 use warnings FATAL => 'all';
 
-use User_Hash_Repository;
+use UserHashRepository;
 use User;
 
 my $singleton_user_service = undef;
@@ -20,22 +20,23 @@ sub new {
 sub add_user {
     my $self = shift;
     my ($username, $first_name, $last_name) = @_;
-
-    if (User_Hash_Repository::find($username))
+    my $userRepository = UserHashRepository->new();
+    if ($userRepository->find($username))
     {
         return 0;
     }
     my $user = User->new($username, $last_name, $first_name);
-    return User_Hash_Repository::add($user);
+    return $userRepository->add($user);
 }
 
 sub delete_user {
     my $self = shift;
     my $username = shift;
-    my $user = User_Hash_Repository::find($username);
+    my $userRepository = UserHashRepository->new();
+    my $user = $userRepository->find($username);
     if ($user)
     {
-        return User_Hash_Repository::delete($user);
+        return $userRepository->delete($user);
 
     }
     return 0;
