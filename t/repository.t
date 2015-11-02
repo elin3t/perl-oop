@@ -37,8 +37,8 @@ $repository->add('theKey2', $item2);
 my $auxItem = $repository->find('theKey');
 is($auxItem->{value}, 'a value', 'Find element by key' );
 
-my $auxItem = $repository->find('theKey2');
-is($auxItem->{value}, 'a value2', 'Find element by other key' );
+my $auxItem1 = $repository->find('theKey2');
+is($auxItem1->{value}, 'a value2', 'Find element by other key' );
 
 my $auxItem2 = $repository->find('theKey3');
 is($auxItem2, -1, 'Find unexistent element by key' );
@@ -51,10 +51,16 @@ is($items->{theKey}->{value} , 'a value', 'List items' );
 is($items->{theKey2}->{value} , 'a value2', 'List items' );
 
 
-my $count = keys $repository->{items};
-is($count, 2, 'Add element to items' );
-$repository->delete('theKey2');
-my $count = keys $repository->{items};
-is($count, 1, 'Remove element' );
+my $count1 = keys $repository->{items};
+is($count1, 2, 'Add element to items' );
+
+my $result = $repository->delete('theKey2');
+my $resultNotKey = $repository->delete('notKey');
+is($resultNotKey , -1, 'Remove element' );
+
+my $count2 = keys $repository->{items};
+is($result->{value} , 'a value2', 'Remove element' );
+is($count2, 1, 'Remove element' );
+
 done_testing();
 
