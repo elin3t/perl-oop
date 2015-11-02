@@ -36,7 +36,7 @@ sub delete_user {
     my $user = $userRepository->find($username);
     if ($user)
     {
-        return $userRepository->delete($user);
+        return $userRepository->delete($username);
 
     }
     return 0;
