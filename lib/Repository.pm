@@ -2,7 +2,14 @@ package Repository;
 use strict;
 use warnings FATAL => 'all';
 
-
+sub new {
+    my $class = shift;
+    my $self = {
+        items=> {}
+    };
+    bless $self, $class;
+    return $self;
+}
 sub add{
     my $self = shift;
     my $key = shift;
