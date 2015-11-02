@@ -6,7 +6,9 @@ package Command;
 
 sub new {
     my $class = shift;
-    bless {}, $class;
+    my $self = {};
+    bless $self, $class;
+    return $self;
 }
 
 sub execute {
