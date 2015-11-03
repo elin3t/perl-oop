@@ -1,5 +1,5 @@
 #!/user/bin/perl
-package PurchaserCmd;
+package PurchaseCmd;
 use strict;
 use warnings FATAL => 'all';
 use v5.18;
