@@ -91,4 +91,8 @@ sub package_list {
     return @{shift->{'package_list'}};
 }
 
+sub package_number {
+    return shift->{'package_number'};
+}
+
 1;
