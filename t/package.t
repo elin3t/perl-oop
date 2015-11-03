@@ -20,12 +20,12 @@ use Test::More;
 use lib '../lib';
 use Package;
 
-my $package = Package->new('12345678','Enviado','Montevideo','Libro de Perl');
+my $package = Package->new('12345678','Montevideo','Libro de Perl');
 
-is($package->number,'12345678','initial value for number');
-is($package->state,'Enviado', 'initial value for state');
-is($package->location,'Montevideo', 'initial value for location');
-is(scalar $package->itineraries, 0,'initial value for itineraries');
+is($package->number(),'12345678','initial value for number');
+is($package->state(),'Enviado', 'initial value for state');
+is($package->location(),'Montevideo', 'initial value for location');
+is(scalar $package->itineraries(), 0,'initial value for itineraries');
 
 my $itinerary = Itinerary_Test->new;
 $package->add_itinerary($itinerary);
