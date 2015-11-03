@@ -51,10 +51,10 @@ sub description {
 
 sub state {
     my $self = shift;
-    my ($sent, $received);
+    my ($send, $received);
     my $state = $self->{'state'};
 
-    foreach $pkg (@{$self->package_list()}) {
+    foreach my $pkg ($self->package_list()) {
 	    if($pkg->state() eq "Enviado") {
 	        $send = 1;
 	    }
