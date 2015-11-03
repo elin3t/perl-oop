@@ -48,14 +48,15 @@ sub buy {
     my $user = $user_repo->find($user_id);
     if($user) {
         my $order = $order_repo->find($ord_num);
-        if(undef $order) {
+        if($order) {
+            my $error = Error->new("Error: order exists");
+            return $error;
+        } else {
             $order = Order->new($user_id, $ord_num, $description, $amount_of_pkgs);
             $order_repo->add($order);
             my $output = Output->new("Compra '$ord_num' registrada");
             return $output;
-        } else {
-            my $error = Error->new("Error: order exists");
-            return $error;
+
         }
     } else {
         my $error = Error->new("Error: user not found");

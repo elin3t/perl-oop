@@ -9,15 +9,17 @@ use OrderService;
 
 my $user_service = UserService->new();
 my $order_service = OrderService->new();
+my $output;
 
-# BUY
-# Inexistent user
-is($order_service->buy('testname','100','compra de prueba','10'), 0, 'Error: user not found');
-# Successful buy
+$output = $order_service->buy('testname','100','compra de prueba','10');
+is($output->get_output(), 'Error: user not found', 'BUY 1-->INEXISTENT USER');
+
 $user_service->add_user('testname','test_firstname', 'test_lastname');
-is($order_service->buy('testname','100','compra de prueba','10'), 1, 'Compra \'100\' registrada');
-# Order exists
-is($order_service->buy('testname','100','compra de prueba','10'), 0, 'Error: order exists');
+$output = $order_service->buy('testname','100','compra de prueba','10');
+is($output->get_output(), 'Compra \'100\' registrada', 'BUY 2--> SUCCESSFUL ORDER CREATION');
+
+$output = $order_service->buy('testname','100','compra de prueba','10');
+is($output->get_output(), 'Error: order exists', 'BUY 3 --> ORDER EXISTS');
 
 # DISPATCH
 # Inexistent order
