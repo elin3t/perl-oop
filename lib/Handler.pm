@@ -20,11 +20,11 @@ use warnings;
 use v5.18;
 use AddUserCmd;
 use DelUserCmd;
-use PurchaseCmd;
+#use PurchaseCmd;
 use PostaPkgCmd;
-use DispatchCmd;
+#use DispatchCmd;
 use ReceptionCmd;
-use StateOrderCmd;
+#use StateOrderCmd;
 use ItineraryCmd;
 use Error;
 
@@ -42,13 +42,13 @@ sub new{
     return $self;
 }
 
-my $parse_line = sub parse 
-{
+my $parse_line = sub {
+    my $self = shift;
     my $line = shift;
     my @command_parameters = split(/,/,$line);
 
     return @command_parameters;
-}
+};
 
 sub command_factory {
     my $self = shift;

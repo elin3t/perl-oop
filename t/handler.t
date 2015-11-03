@@ -24,8 +24,24 @@ use Handler;
 
 my $handler = Handler->new();
 
-is($handler->command_factory("A,jjlopez,Lopez,Juan José","command_factory"));
+my $command = $handler->command_factory("A");
+is($command->isa('AddUserCmd'),1,"command_factory addusercmd");
 
+$command = $handler->command_factory("E");
+is($command->isa('DelUserCmd'),1,"command_factory delusercmd");
+
+$command = $handler->command_factory("P");
+is($command->isa('PostaPkgCmd'),1,"command_factory postapkgcmd");
+
+$command = $handler->command_factory("R");
+is($command->isa('ReceptionCmd'),1,"command_factory receptioncmd");
+
+$command = $handler->command_factory("Z");
+is($command->isa('ItineraryCmd'),1,"command_factory itinerarycmd");
+#my $command = $handler->command_factory("A");
+#is($command->isa('AddUserCmd'),1,"command_factory adduser");
+#is($command->isa('AddUserCmd'),1,"command_factory adduser");
+#is($command->isa('AddUserCmd'),1,"command_factory adduser");
 done_testing();
 
 
