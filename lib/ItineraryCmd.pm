@@ -18,7 +18,7 @@
 use strict;
 use warnings;
 use Command;
-#use OrderService;
+use OrderService;
 
 package ItineraryCmd;
 
