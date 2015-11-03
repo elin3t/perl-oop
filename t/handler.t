@@ -38,10 +38,18 @@ is($command->isa('ReceptionCmd'),1,"command_factory receptioncmd");
 
 $command = $handler->command_factory("Z");
 is($command->isa('ItineraryCmd'),1,"command_factory itinerarycmd");
-#my $command = $handler->command_factory("A");
-#is($command->isa('AddUserCmd'),1,"command_factory adduser");
-#is($command->isa('AddUserCmd'),1,"command_factory adduser");
-#is($command->isa('AddUserCmd'),1,"command_factory adduser");
+#my $command = $handler->command_factory("C");
+#is($command->isa('PurchaseCmd'),1,"command_factory purchasecmd");
+
+#my $command = $handler->command_factory("D");
+#is($command->isa('DispatchCmd'),1,"command_factory dispatchcmd");
+
+#my $command = $handler->command_factory("Y");
+#is($command->isa('StateOrderCmd'),1,"command_factory stateordercmd");
+
+
+
+
 done_testing();
 
 
