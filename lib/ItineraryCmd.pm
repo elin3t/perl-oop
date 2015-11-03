@@ -28,7 +28,7 @@ sub execute {
     my $self = shift;
     my @parameters = $self->parameters;
     my $order_number = $parameters[0];
-    my $order_service = OrderService->new();
+    my $order_service = shift || OrderService->new();
     my $output = $order_service->read_itinerary($order_number);
 
     return $output;
