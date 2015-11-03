@@ -20,9 +20,9 @@ use warnings;
 use v5.18;
 use AddUserCmd;
 use DelUserCmd;
-#use PurchaseCmd;
+use PurchaseCmd;
 use PostaPkgCmd;
-#use DispatchCmd;
+use DispatchCmd;
 use ReceptionCmd;
 #use StateOrderCmd;
 use ItineraryCmd;
@@ -118,7 +118,7 @@ sub print_errors {
     my @list =  @{$self->{'errors'}};
     
     for my $error (@list){
-        die $error->get_output();
+        say $error->get_output();
     }
 }
 
