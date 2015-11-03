@@ -20,7 +20,7 @@ sub buy {
             $order = Order->new($user_id, $ord_num, $description, $amount_of_pkgs);
             $order_repo->add($order);
             print "Compra '$ord_num' registrada";
-            return 0;
+            return "hola mundo";
         } else {
             print "Error: order exists";
         }
