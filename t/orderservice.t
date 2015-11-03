@@ -12,25 +12,29 @@ my $order_service = OrderService->new();
 my $output;
 
 $output = $order_service->buy('testname','100','compra de prueba','10');
-is($output->get_output(), 'Error: user not found', 'BUY 1-->INEXISTENT USER');
+is($output->get_output(), 'Error: user not found', 'BUY 1 -->INEXISTENT USER');
 
 $user_service->add_user('testname','test_firstname', 'test_lastname');
 $output = $order_service->buy('testname','100','compra de prueba','10');
-is($output->get_output(), 'Compra \'100\' registrada', 'BUY 2--> SUCCESSFUL ORDER CREATION');
+is($output->get_output(), 'Compra \'100\' registrada', 'BUY 2 --> SUCCESSFUL ORDER CREATION');
 
 $output = $order_service->buy('testname','100','compra de prueba','10');
 is($output->get_output(), 'Error: order exists', 'BUY 3 --> ORDER EXISTS');
 
-# DISPATCH
-# Inexistent order
-is($order_service->dispatch('200','5','Figuritas de luke skywalker', 'Globant NorthPark', '03112015'), 0, 'Error: order not found');
-# Inexistent package
+
+$output = $order_service->dispatch('200','5','Figuritas de luke skywalker', 'Globant NorthPark', '03112015');
+is($output->get_output(), 'Error: order not found', 'DISPATCH 1 --> ORDER NOT FOUND');
+
+
 $user_service->add_user('dlalo','dlalo_firstname', 'dlalo_lastname');
 $order_service->buy('dlalo','200','compra de prueba 2','2');
-is($order_service->dispatch('200','5','Figuritas de luke skywalker', 'Globant NorthPark', '03112015'), 0, 'Error: package 5 doesn\'t exist in the order');
-# Successful dispatch
+$output = $order_service->dispatch('200','5','Figuritas de luke skywalker', 'Globant NorthPark', '03112015');
+is($output->get_output(), 'Error: package 5 doesn\'t exist in the order', 'DISPATCH 2 --> PACKAGE NOT EXISTS');
+
+
 $order_service->buy('dlalo','300','compra de prueba 2','7');
-is($order_service->dispatch('300','5','Figuritas de luke skywalker', 'Globant NorthPark', '03112015'), 1, 'El paquete \'5\' del pedido \'300\' despachado');
+$output = $order_service->dispatch('300','5','Figuritas de luke skywalker', 'Globant NorthPark', '03112015');
+is($output->get_output(), 'El paquete \'5\' del pedido \'300\' despachado', 'DISPATCH 3 --> SUCCESSFUL DISPATCH');
 
 #POST_PACKAGE
 # Inexistent order

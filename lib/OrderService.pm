@@ -72,7 +72,7 @@ sub dispatch {
     $order = $order_repo->find($ord_num);
     if($order) {
         # Check if the package already exist in the order
-        foreach my $pkg (@{$order->package_list()}) {
+        foreach my $pkg ($order->package_list()) {
             if ($pkg->number() == $pkg_num) {
                 $package = $pkg;
                 last;
@@ -103,7 +103,7 @@ sub post_package {
     $order = $order_repo->find($ord_num);
     if($order) {
         # Search package
-        foreach my $pkg (@{$order->package_list()}) {
+        foreach my $pkg ($order->package_list()) {
             if ($pkg->number() == $pkg_num) {
                 $package = $pkg;
                 last;
@@ -132,7 +132,7 @@ sub reception_package {
     $order = $order_repo->find($ord_num);
     if($order) {
         # Search package
-        foreach my $pkg (@{$order->package_list()}) {
+        foreach my $pkg ($order->package_list()) {
             if ($pkg->number() == $pkg_num) {
                 $package = $pkg;
                 last;
@@ -169,7 +169,7 @@ sub state_order {
         $str_out .= "Nombre: $user->last_name(), $user->first_name()\n";
         $str_out .= "Estado: $order->state()\n";
         $str_out .= "Paquetes:\n";
-        foreach my $pkg (@{$order->package_list()}) {
+        foreach my $pkg ($order->package_list()) {
         	$str_out .= " $pkg->number(): $pkg->contents() - $pkg->location()\n";
 	    }
         my $output = Output->new($str_out);
