@@ -50,14 +50,37 @@ sub description {
 }
 
 sub state {
-    return shift->{'state'};
+    my $self = shift;
+    my ($send, $received);
+    my $state = $self->{'state'};
+
+    foreach my $pkg ($self->package_list()) {
+	    if($pkg->state() eq "Enviado") {
+	        $send = 1;
+	    }
+	    elsif($pkg->state() eq "Recibido") {
+	        $received = 1;
+	    }
+    }
+	
+    if($send == 0 && $received == 0){
+	    $state = "Pendiente";
+    }
+    elsif($send == 1 && $received == 1){
+        $state = "Despachando";
+    }
+    elsif($send == 1 && $received == 0){
+	    $state = "Enviado";
+    }
+    elsif($send == 0 && $received == 1){
+	    $state = "Entregado";
+    }
+
+    $self->{'state'} = $state;
+
+    return $state;
 }
 
-sub set_state{
-    my $self = shift;
-    my $state = shift;
-    $self->{'state'} = $state;
-}
 sub add_package {
     my $self = shift;
     my $new_package = shift;
