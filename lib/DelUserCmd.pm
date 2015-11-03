@@ -8,10 +8,10 @@ use UserService;
 
 sub execute {
     my $self = shift;
-    my $username = shift;
+    my @username = $self->parameters();
     my $user_service = UserService->new();
-    if ($self->validate($username)){
-        return $user_service->delete_user($username);
+    if ($self->validate($username[0])){
+        return $user_service->delete_user($username[0]);
     }
     return 0;
 }
