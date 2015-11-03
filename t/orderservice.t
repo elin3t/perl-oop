@@ -31,51 +31,65 @@ is($output->get_output(), 'Error: order not found', 'DISPATCH 1 --> ORDER NOT FO
 # TEST 5
 $user_service->add_user('dlalo','dlalo_firstname', 'dlalo_lastname');
 $order_service->buy('dlalo','200','compra de prueba 2','2');
-$output = $order_service->dispatch('200','5','Figuritas de luke skywalker', 'Globant NorthPark', '03112015');
-is($output->get_output(), 'Error: package 5 doesn\'t exist in the order', 'DISPATCH 2 --> PACKAGE NOT EXISTS');
+$output = $order_service->dispatch('200','1','Figuritas de luke skywalker', 'Globant NorthPark', '03112015');
+is($output->get_output(), 'El paquete \'1\' del Pedido \'200\' despachado', 'DISPATCH 2 --> SUCCESSFUL DISPATCH');
 
 # TEST 6
-$order_service->buy('dlalo','300','compra de prueba 2','3');
+$order_service->buy('dlalo','300','compra de prueba 2','2');
 $output = $order_service->dispatch('300','0','Figuritas de luke skywalker', 'Globant NorthPark', '03112015');
 $output = $order_service->dispatch('300','1','Death Star', 'Globant NorthPark', '03112015');
 $output = $order_service->dispatch('300','2','Millenium Hawk', 'Globant NorthPark', '03112015');
-is($output->get_output(), 'El paquete \'2\' del pedido \'300\' despachado', 'DISPATCH 3 --> SUCCESSFUL DISPATCH');
+is($output->get_output(), 'Error: el pedido \'300\' ya posee todos los paquetes', 'DISPATCH 3 --> ALL ALREADY DISPATCHED');
 
-
+# TEST 7
 $output =$order_service->post_package('400','5', 'Aduana EZE', 'Bateria de celular thl W8+', '02112015');
 is($output->get_output(), 'Error: order not found', 'POSTA PACKAGE 1 --> INEXISTENT ORDER');
 
+# TEST 8
 $order_service->buy('dlalo','400','compra de prueba 2','2');
 $output = $order_service->post_package('400','5','Correo argentino - monserrat','posta Nro 2', '03112015');
 is ($output->get_output(), 'Error: package not found', 'POSTA PACKAGE 2 --> PACKAGE NOT FOUND');
 
+# TEST 9
 $order_service->dispatch('400','1','Bateria de celular thl W8+', 'Aduana EZE', '02112015');
 $output = $order_service->post_package('400','1','Correo argentino - monserrat','posta Nro 2', '03112015');
-is ($output->get_output(),'Posta del paquete \'1\' del pedido \'400\' registrada', 'POSTA PACKAGE 3 --> SUCCESSFUL ADD POSTA');
+is ($output->get_output(),'Posta del paquete \'1\' del Pedido \'400\' registrada', 'POSTA PACKAGE 3 --> SUCCESSFUL ADD POSTA');
 
-# RECEPTION_PACKAGE
-# Inexistent order
-is($order_service->reception_package('500','1', 'Aduana EZE', 'Bateria de celular thl W8+', '02112015'), 0, 'Error: order not found');
-# Inexistent package
-is($order_service->reception_package('400','5', 'Aduana EZE', 'Bateria de celular thl W8+', '02112015'), 0, 'Error: package not found');
-# Successful reception
-is($order_service->reception_package('400','1', 'Mi casa!!', 'Bateria de celular thl W8+', '02112015'), 1, 'Paquete \'1\' del pedido \'400\' recibido');
+# TEST 10
+$output = $order_service->reception_package('500','1', 'Aduana EZE', 'Bateria de celular thl W8+', '02112015');
+is($output->get_output(), 'Error: order not found', 'RECEPTION PACKAGE 1 --> ORDER NOT FOUND');
 
-# State order
-# Inexistent order
-is($order_service->state_order('60'), 0, 'Error: order not found');
-# State Pendiente
+# TEST 11
+$output = $order_service->reception_package('400','5', 'Aduana EZE', 'Bateria de celular thl W8+', '02112015');
+is($output->get_output(), 'Error: package not found', 'RECEPTION PACKAGE 2 --> PACKAGE NOT FOUND');
+
+# TEST 12
+$output = $order_service->reception_package('400','1', 'Mi casa!!', 'Bateria de celular thl W8+', '02112015');
+is($output->get_output(), 'Paquete \'1\' del Pedido \'400\' recibido', 'RECEPTION PACKAGE 3 --> SUCCESSFUL RECEPTION');
+
+# TEST 13
+$output = $order_service->state_order('60');
+is($output->get_output(), 'Error: order not found', 'STATE ORDER 1 --> ORDER NOT FOUND');
+
+# TEST 14
 $order_service->buy('dlalo','600','Elementos de cocina','2');
-is($order_service->state_order('600'), 1, 'Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Pendiente\nPaquetes:\n');
-# State Despachando
+$output = $order_service->state_order('600');
+is($output->get_output(), "Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Pendiente\nPaquetes:\n", 'STATE ORDER 2 --> PENDIENTE');
+
+# TEST 15
 $order_service->dispatch('600','1','Microondas', 'Rodo sede microcentro', '02112015');
-is($order_service->state_order('600'), 1, 'Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Despachando\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n');
-# State Enviado
+$output = $order_service->state_order('600');
+is($output->get_output(), "Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Despachando\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n", 'STATE ORDER 3 --> DESPACHANDO');
+
+# TEST 16
 $order_service->dispatch('600','2','Lavarropas', 'Rodo sede boedo', '03112015');
-is($order_service->state_order('600'), 1, 'Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Enviado\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n 2: Lavarropas - Rodo sede boedo\n');
-# State entregado
+$output = $order_service->state_order('600');
+is($output->get_output(), "Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Enviado\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n 2: Lavarropas - Rodo sede boedo\n",'STATE ORDER 4 --> ENVIADO');
+
+# TEST 17
 $order_service->reception_package('600','1', 'Mi casa', '04112015');
 $order_service->reception_package('600','2', 'Mi casa', '04112015');
-is($order_service->state_order('600'), 1, 'Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Entregado\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n 2: Lavarropas - Rodo sede boedo\n');
+$output = $order_service->state_order('600');
+is($output->get_output(), "Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Entregado\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n 2: Lavarropas - Rodo sede boedo\n", 'STATE ORDER 5 --> ENTREGADO');
 
 done_testing();

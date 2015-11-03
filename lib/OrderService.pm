@@ -136,7 +136,7 @@ sub reception_package {
             $itinerary = Itinerary->new($ord_num, $location, $date, "Recibido");
             $package->add_itinerary($itinerary);
             $package->set_state("Recibido");
-            my $output = Output->new("Paquete '$pkg_num' del Pedido '$ord_num' recibido\n");
+            my $output = Output->new("Paquete '$pkg_num' del Pedido '$ord_num' recibido");
             return $output;
         } else {
             my $error = Error->new("Error: package not found");
@@ -158,13 +158,13 @@ sub state_order {
     if($order) {
         $user_id = $order->user_id();
         $user = $user_repo->find($user_id);
-        $str_out = "Pedido: $order->number()\n";
-        $str_out .= "Usuario: $user->username()\n";
-        $str_out .= "Nombre: $user->last_name(), $user->first_name()\n";
-        $str_out .= "Estado: $order->state()\n";
+        $str_out = "Pedido: " . $order->number() . "\n";
+        $str_out .= "Usuario: " .  $user->username() ."\n";
+        $str_out .= "Nombre: ". $user->last_name() . ", " . $user->first_name() . "\n";
+        $str_out .= "Estado: " . $order->state() . "\n";
         $str_out .= "Paquetes:\n";
         foreach my $pkg ($order->package_list()) {
-        	$str_out .= " $pkg->number(): $pkg->contents() - $pkg->location()\n";
+        	$str_out .= " ". $pkg->number(). ": " . $pkg->contents() . "-" .  $pkg->location() . "\n";
 	    }
         my $output = Output->new($str_out);
         return $output;
