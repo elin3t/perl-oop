@@ -71,22 +71,16 @@ sub dispatch {
     my $order_repo = OrderHashRepository->new();
     $order = $order_repo->find($ord_num);
     if($order) {
-        # Check if the package already exist in the order
-        foreach my $pkg ($order->package_list()) {
-            if ($pkg->number() == $pkg_num) {
-                $package = $pkg;
-                last;
-            }
-        }
-        if ($package) {
-            $package = Package->new($pkg_num,"Enviado", $location, $content);
+        # Check the amount of packages dispatched
+        if ($order->package_list() < $order->package_number()) {
+            $package = Package->new($pkg_num, $location, $content);
             $itinerary = Itinerary->new($ord_num, $location, $date, "Ubicacion inicial");
             $package->add_itinerary($itinerary);
             $order->add_package($package);
             my $output = Output->new("El paquete '$pkg_num' del Pedido '$ord_num' despachado");
             return $output;
         } else {
-            my $error = Error->new("Error: package $pkg_num doesn't exist in the order");
+            my $error = Error->new("Error: el pedido '$ord_num' ya posee todos los paquetes");
             return $error;
         }
     } else {

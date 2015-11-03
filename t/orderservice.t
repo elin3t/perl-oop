@@ -11,40 +11,47 @@ my $user_service = UserService->new();
 my $order_service = OrderService->new();
 my $output;
 
+# TEST 1
 $output = $order_service->buy('testname','100','compra de prueba','10');
 is($output->get_output(), 'Error: user not found', 'BUY 1 -->INEXISTENT USER');
 
+# TEST 2
 $user_service->add_user('testname','test_firstname', 'test_lastname');
 $output = $order_service->buy('testname','100','compra de prueba','10');
 is($output->get_output(), 'Compra \'100\' registrada', 'BUY 2 --> SUCCESSFUL ORDER CREATION');
 
+# TEST 3
 $output = $order_service->buy('testname','100','compra de prueba','10');
 is($output->get_output(), 'Error: order exists', 'BUY 3 --> ORDER EXISTS');
 
-
+# TEST 4
 $output = $order_service->dispatch('200','5','Figuritas de luke skywalker', 'Globant NorthPark', '03112015');
 is($output->get_output(), 'Error: order not found', 'DISPATCH 1 --> ORDER NOT FOUND');
 
-
+# TEST 5
 $user_service->add_user('dlalo','dlalo_firstname', 'dlalo_lastname');
 $order_service->buy('dlalo','200','compra de prueba 2','2');
 $output = $order_service->dispatch('200','5','Figuritas de luke skywalker', 'Globant NorthPark', '03112015');
 is($output->get_output(), 'Error: package 5 doesn\'t exist in the order', 'DISPATCH 2 --> PACKAGE NOT EXISTS');
 
+# TEST 6
+$order_service->buy('dlalo','300','compra de prueba 2','3');
+$output = $order_service->dispatch('300','0','Figuritas de luke skywalker', 'Globant NorthPark', '03112015');
+$output = $order_service->dispatch('300','1','Death Star', 'Globant NorthPark', '03112015');
+$output = $order_service->dispatch('300','2','Millenium Hawk', 'Globant NorthPark', '03112015');
+is($output->get_output(), 'El paquete \'2\' del pedido \'300\' despachado', 'DISPATCH 3 --> SUCCESSFUL DISPATCH');
 
-$order_service->buy('dlalo','300','compra de prueba 2','7');
-$output = $order_service->dispatch('300','5','Figuritas de luke skywalker', 'Globant NorthPark', '03112015');
-is($output->get_output(), 'El paquete \'5\' del pedido \'300\' despachado', 'DISPATCH 3 --> SUCCESSFUL DISPATCH');
 
-#POST_PACKAGE
-# Inexistent order
-is($order_service->post_package('400','5', 'Aduana EZE', 'Bateria de celular thl W8+', '02112015'), 0, 'Error: order not found');
-# Inexistent package
+$output =$order_service->post_package('400','5', 'Aduana EZE', 'Bateria de celular thl W8+', '02112015');
+is($output->get_output(), 'Error: order not found', 'POSTA PACKAGE 1 --> INEXISTENT ORDER');
+
 $order_service->buy('dlalo','400','compra de prueba 2','2');
-is ($order_service->post_package('400','5','Correo argentino - monserrat','posta Nro 2', '03112015'), 0, 'Error: package not found');
-# Successful post
+$output = $order_service->post_package('400','5','Correo argentino - monserrat','posta Nro 2', '03112015');
+is ($output->get_output(), 'Error: package not found', 'POSTA PACKAGE 2 --> PACKAGE NOT FOUND');
+
 $order_service->dispatch('400','1','Bateria de celular thl W8+', 'Aduana EZE', '02112015');
-is ($order_service->post_package('400','1','Correo argentino - monserrat','posta Nro 2', '03112015'), 1, 'Posta del paquete \'1\' del pedido \'400\' registrada');
+$output = $order_service->post_package('400','1','Correo argentino - monserrat','posta Nro 2', '03112015');
+is ($output->get_output(),'Posta del paquete \'1\' del pedido \'400\' registrada', 'POSTA PACKAGE 3 --> SUCCESSFUL ADD POSTA');
 
 # RECEPTION_PACKAGE
 # Inexistent order
