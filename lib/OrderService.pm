@@ -51,7 +51,7 @@ sub buy {
         if(undef $order) {
             $order = Order->new($user_id, $ord_num, $description, $amount_of_pkgs);
             $order_repo->add($order);
-            my $output = Output-new("Compra '$ord_num' registrada");
+            my $output = Output->new("Compra '$ord_num' registrada");
             return $output;
         } else {
             my $error = Error->new("Error: order exists");
