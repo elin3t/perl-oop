@@ -50,11 +50,14 @@ sub buy {
             $order = Order->new($user_id, $ord_num, $description, $amount_of_pkgs);
             $order_repo->add($order);
             print "Compra '$ord_num' registrada";
+            return 1;
         } else {
             print "Error: order exists";
+            return 0;
         }
     } else {
         print "Error: user not found";
+        return 0;
     }
 }
 
@@ -66,7 +69,7 @@ sub dispatch {
     $order = $order_repo->find($ord_num);
     if($order) {
         # Check if the package already exist in the order
-        foreach $pkg (@{$order->package_list()}) {
+        foreach my $pkg (@{$order->package_list()}) {
             if ($pkg->number() == $pkg_num) {
                 $package = $pkg;
                 last;
@@ -78,11 +81,14 @@ sub dispatch {
             $package->add_itinerary($itinerary);
             $order->add_package($package);
             print "El paquete '$pkg_num' del Pedido '$ord_num' despachado";
+            return 1;
         } else {
             print "Error: package $pkg_num doesn't exist in the order";
+            return 0;
         }
     } else {
         print "Error: order not found";
+        return 0;
     }
 }
 
@@ -94,7 +100,7 @@ sub post_package {
     $order = $order_repo->find($ord_num);
     if($order) {
         # Search package
-        foreach $pkg (@{$order->package_list()}) {
+        foreach my $pkg (@{$order->package_list()}) {
             if ($pkg->number() == $pkg_num) {
                 $package = $pkg;
                 last;
@@ -104,11 +110,14 @@ sub post_package {
             $itinerary = Itinerary->new($ord_num, $location, $date, $description);
             $package->add_itinerary($itinerary);
             print "Posta del paquete '$pkg_num' del Pedido '$ord_num' registrada";
+            return 1;
         } else {
             print "Error: package not found";
+            return 0;
         }
     } else {
         print "Error: order not found";
+        return 0;
     }
 }
 
@@ -120,7 +129,7 @@ sub reception_package {
     $order = $order_repo->find($ord_num);
     if($order) {
         # Search package
-        foreach $pkg (@{$order->package_list()}) {
+        foreach my $pkg (@{$order->package_list()}) {
             if ($pkg->number() == $pkg_num) {
                 $package = $pkg;
                 last;
@@ -131,11 +140,14 @@ sub reception_package {
             $package->add_itinerary($itinerary);
             $package->set_state("Recibido");
             print "Paquete '$pkg_num' del Pedido '$ord_num' recibido\n";
+            return 1;
         } else {
             print "Error: package not found";
+            return 0;
         }
     } else {
         print "Error: order not found";
+        return 0;
     }
 }
 
@@ -154,11 +166,13 @@ sub state_order {
         print "Nombre: $user->last_name(), $user->first_name()\n";
         print "Estado: $order->state()\n";
         print "Paquetes:\n";
-        foreach $pkg (@{$order->package_list()}) {
+        foreach my $pkg (@{$order->package_list()}) {
         	print " $pkg->number(): $pkg->contents() - $pkg->location()\n";
-	}
+	    }
+        return 1;
     } else {
         print "Error: order not found";
+        return 0;
     }
 }
 
@@ -172,23 +186,21 @@ sub read_itinerary {
     if($order) {
         $user_id = $order->user_id();
         $user = $user_repo->find($user_id);
-        if ($user) {
-            print "Pedido: $order->number()\n";
-            print "Usuario: $user->username()\n";
-            print "Nombre: $user->last_name(), $user->first_name()\n";
-            print "Estado: $order->state()\n";
-            foreach $pkg (@{$order->package_list()}) {
-                print "Itinerario: \n";
-                print "          $pkg->number(): $pkg->contents() - ";
-                foreach $itinerary (@{$pkg->itineraries()}) {
-                    print "$itinerary->location() ($itinerary->date()), $itinerary->description()\n";
-                }
+        print "Pedido: $order->number()\n";
+        print "Usuario: $user->username()\n";
+        print "Nombre: $user->last_name(), $user->first_name()\n";
+        print "Estado: $order->state()\n";
+        foreach my $pkg (@{$order->package_list()}) {
+            print "Itinerario: \n";
+            print "          $pkg->number(): $pkg->contents() - ";
+            foreach my $itinerary (@{$pkg->itineraries()}) {
+                print "$itinerary->location() ($itinerary->date()), $itinerary->description()\n";
             }
-        } else {
-            print "Error: user not found";
         }
+        return 1;
     } else {
         print "Error: order not found";
+        return 0;
     }
 }
 
