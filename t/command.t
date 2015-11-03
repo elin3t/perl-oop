@@ -9,7 +9,9 @@ use Test::More;
 use lib '../lib';
 use Command;
 
-my $command = Command->new;
+my @parameters = ('a','b','c');
+my $command = Command->new(@parameters);
+is(scalar $command->parameters, 3, 'Check paramenters initialization');
 dies_ok{$command->execute()};
 
 done_testing();
