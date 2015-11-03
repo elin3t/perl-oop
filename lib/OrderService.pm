@@ -149,18 +149,14 @@ sub state_order {
     if($order) {
         $user_id = $order->user_id();
         $user = $user_repo->find($user_id);
-        if ($user) {
-            print "Pedido: $order->number()\n";
-            print "Usuario: $user->username()\n";
-            print "Nombre: $user->last_name(), $user->first_name()\n";
-            print "Estado: $order->state()\n";
-            print "Paquetes:\n";
-            foreach $pkg (@{$order->package_list()}) {
-                print " $pkg->number(): $pkg->contents() - $pkg->location()\n";
-            }
-        } else {
-            print "Error: user not found";
-        }
+        print "Pedido: $order->number()\n";
+        print "Usuario: $user->username()\n";
+        print "Nombre: $user->last_name(), $user->first_name()\n";
+        print "Estado: $order->state()\n";
+        print "Paquetes:\n";
+        foreach $pkg (@{$order->package_list()}) {
+        	print " $pkg->number(): $pkg->contents() - $pkg->location()\n";
+	}
     } else {
         print "Error: order not found";
     }
