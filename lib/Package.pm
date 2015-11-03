@@ -26,6 +26,11 @@ sub state{
     return  shift->{"state"};
 }
 
+sub set_state {
+    my $self = shift;
+    $self->{"state"} = shift;
+}    
+
 sub location {
     return shift->{"location"};
 }
