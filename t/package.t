@@ -20,12 +20,12 @@ use Test::More;
 use lib '../lib';
 use Package;
 
-my $package = Package->new('12345678','Enviado','Montevideo','Libro de Perl');
+my $package = Package->new('12345678','Montevideo','Libro de Perl');
 
-is($package->number,'12345678','initial value for number');
-is($package->state,'Enviado', 'initial value for state');
-is($package->location,'Montevideo', 'initial value for location');
-is(scalar $package->itineraries, 0,'initial value for itineraries');
+is($package->number(),'12345678','initial value for number');
+is($package->state(),'Enviado', 'initial value for state');
+is($package->location(),'Montevideo', 'initial value for location');
+is(scalar $package->itineraries(), 0,'initial value for itineraries');
 
 my $itinerary = Itinerary_Test->new;
 $package->add_itinerary($itinerary);
@@ -34,15 +34,5 @@ is(scalar $package->itineraries, 1,'check value of itineraries after add a new i
 my @itineraries = $package->itineraries;
 
 is($itineraries[0]->to_test,'ok!','check instance of itinerary in itineraries');
-
-my $package1 = Package->new('12345678','','Montevideo','Libro de Perl');
-is($package1->state,'Enviado', 'initial value for state');
-
-my $package2 = Package->new('12345678',undef,'Montevideo','Libro de Perl');
-is($package2->state,'Enviado', 'initial value for state');
-
-
-
-
 
 done_testing();

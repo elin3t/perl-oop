@@ -6,18 +6,15 @@ use warnings FATAL => 'all';
 sub new {
     my $class = shift;
     
-    my ($number,$state,$location,$contents) = @_;
+    my ($number,$location,$contents) = @_;
     my $self = {
         number => $number,
-        state => $state,
+        state => 'Enviado',
         location => $location,
         contents => $contents,
         itineraries => []
     };
-    bless $self, $class;
-    if(not defined $self->{"state"} or $self->{"state"} eq ''){
-        $self->{"state"} = 'Enviado';
-    }
+    bless $self,$class;
     return $self;
 }
 
@@ -26,7 +23,7 @@ sub number {
 }
 
 sub state{
-    return  shift->{"state"};
+    return shift->{"state"};
 }
 
 sub location {
