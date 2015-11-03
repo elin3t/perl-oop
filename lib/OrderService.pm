@@ -45,7 +45,7 @@ sub buy {
     my $order_repo = OrderHashRepository->new();
     my $user = $user_repo->find($user_id);
     if($user) {
-        my $order = $order_repo->find($number);
+        my $order = $order_repo->find($ord_num);
         if(undef $order) {
             $order = Order->new($user_id, $ord_num, $description, $amount_of_pkgs);
             $order_repo->add($order);
