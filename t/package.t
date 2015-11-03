@@ -35,4 +35,14 @@ my @itineraries = $package->itineraries;
 
 is($itineraries[0]->to_test,'ok!','check instance of itinerary in itineraries');
 
+my $package1 = Package->new('12345678','','Montevideo','Libro de Perl');
+is($package1->state,'Enviado', 'initial value for state');
+
+my $package2 = Package->new('12345678',undef,'Montevideo','Libro de Perl');
+is($package2->state,'Enviado', 'initial value for state');
+
+
+
+
+
 done_testing();

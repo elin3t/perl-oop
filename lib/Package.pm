@@ -15,6 +15,9 @@ sub new {
         itineraries => []
     };
     bless $self, $class;
+    if(not defined $self->{"state"} or $self->{"state"} eq ''){
+        $self->{"state"} = 'Enviado';
+    }
     return $self;
 }
 
