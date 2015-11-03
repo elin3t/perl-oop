@@ -35,4 +35,7 @@ my @itineraries = $package->itineraries;
 
 is($itineraries[0]->to_test,'ok!','check instance of itinerary in itineraries');
 
+$package->set_state("Recibido");
+is($package->state,"Recibido","check state after change");
+
 done_testing();
