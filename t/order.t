@@ -49,8 +49,6 @@ is($order->user_id, "pauriarte", "user_id.");
 is($order->number, 122, "number");
 is($order->description, "detalles orden", "description");
 is($order->state, "Pendiente", "state");# Pending.
-$order->set_state("Despachado"); 
-is($order->state, "Despachado", "set_state");
 $order->add_package($pack1);
 $order->add_package($pack2);
 my @package_list = $order->package_list;
