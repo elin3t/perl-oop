@@ -42,6 +42,4 @@ sub delete_user {
     return 0;
 }
 
-
-
 1;
