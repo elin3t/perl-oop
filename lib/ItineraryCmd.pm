@@ -22,6 +22,8 @@ use OrderService;
 
 package ItineraryCmd;
 
+our @ISA = qw(Command);  
+
 sub execute {
     my $self = shift;
     my @parameters = $self->parameters;
