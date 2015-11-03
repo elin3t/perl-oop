@@ -6,9 +6,8 @@ use lib '../lib';
 use DelUserCmd;
 use UserService;
 
-
+#create one user to test
 my $us = UserService->new();
-
 my $testuser = $us->add_user('test_username', 'test_name', 'test_lastn');
 
 is( DelUserCmd->execute('test_username'), 1, 'return true, success on deleting user' );

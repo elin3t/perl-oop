@@ -1,23 +1,17 @@
 package DelUserCmd;
 use strict;
 use warnings FATAL => 'all';
+use v5.18;
+use parent qw(Command);
+
 use UserService;
-
-
-sub new {
-    my $class = shift;
-    my $self = {};
-    bless $self, $class;
-    return $self;
-}
-
 
 sub execute {
     my $self = shift;
     my $username = shift;
-
+    my $user_service = UserService->new();
     if ($self->validate($username)){
-        return UserService::delete_user($username);
+        return $user_service->delete_user($username);
     }
     return 0;
 }
