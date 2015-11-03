@@ -14,31 +14,41 @@
 #     REVISION: ---
 #===============================================================================
 
+package OrderService;
+
 use strict;
 use warnings FATAL => 'all';
-use v5.18;
 
-package OrderService;
+use UserHashRepository;
+use OrderHashRepository;
+use User;
+use Order;
+use Itinerary;
+use Package;
+
+my $singleton_order_service = undef;
 
 sub new {
     my $class = shift;
-    my ($user_hash_repository, $order_hash_repository) = @_;
-    my $self = bless {}, $class;
 
-    $self->{'user_hash_repository'} = $user_hash_repository;
-    $self->{'order_hash_repository'} = $order_hash_repository;
+    return $singleton_order_service if defined $singleton_order_service;
 
-    return $self;
+    my $self = {};
+    $singleton_order_service = bless $self, $class;
+    return $singleton_order_service;
 }
 
 sub buy {
-    my ($self,$user_id, $ord_num, $description, $amount_of_pkgs) = @_;
-    my $user = $self{'user_hash_repository'}->find($user_id);
+    my $self = shift;
+    my ($user_id, $ord_num, $description, $amount_of_pkgs) = @_;
+    my $user_repo = UserHashRepository->new();
+    my $order_repo = OrderHashRepository->new();
+    my $user = $user_repo->find($user_id);
     if($user) {
-        my $order = $self{'order_hash_repository'}->find($number);
+        my $order = $order_repo->find($number);
         if(undef $order) {
             $order = Order->new($user_id, $ord_num, $description, $amount_of_pkgs);
-            $self{'order_hash_repository'}->add($order);
+            $order_repo->add($order);
             print "Compra '$ord_num' registrada";
         } else {
             print "Error: order exists";
@@ -49,9 +59,11 @@ sub buy {
 }
 
 sub dispatch {
-    my ($self, $ord_num, $pkg_num, $content, $location, $date) = @_;
-    my ($order, $package, $itinerary, $state);
-    $order = $self{'order_hash_repository'}->find($ord_num);
+    my $self = shift;
+    my ($ord_num, $pkg_num, $content, $location, $date) = @_;
+    my ($order, $package, $itinerary);
+    my $order_repo = OrderHashRepository->new();
+    $order = $order_repo->find($ord_num);
     if($order) {
         # Check if the package already exist in the order
         foreach $pkg (@{$order->package_list()}) {
@@ -75,9 +87,11 @@ sub dispatch {
 }
 
 sub post_package {
-    my ($self, $ord_num, $pkg_num, $location, $description, $date) = @_;
+    my $self = shift;
+    my ($ord_num, $pkg_num, $location, $description, $date) = @_;
     my ($order, $package, $itinerary);
-    $order = $self{'order_hash_repository'}->find($ord_num);
+    my $order_repo = OrderHashRepository->new();
+    $order = $order_repo->find($ord_num);
     if($order) {
         # Search package
         foreach $pkg (@{$order->package_list()}) {
@@ -99,9 +113,11 @@ sub post_package {
 }
 
 sub reception_package {
-    my ($self, $ord_num, $pkg_num, $location, $date) = @_;
+    my $self = shift;
+    my ($ord_num, $pkg_num, $location, $date) = @_;
     my ($order, $package, $itinerary);
-    $order = $self{'order_hash_repository'}->find($ord_num);
+    my $order_repo = OrderHashRepository->new();
+    $order = $order_repo->find($ord_num);
     if($order) {
         # Search package
         foreach $pkg (@{$order->package_list()}) {
@@ -124,12 +140,15 @@ sub reception_package {
 }
 
 sub state_order {
-    my ($self, $ord_num) = @_;
-    my ($order, $state, $user_id, $user);
-    $order = $self{'order_hash_repository'}->find($ord_num);
+    my $self = shift;
+    my $ord_num = shift;
+    my ($order, $user_id, $user);
+    my $user_repo = UserHashRepository->new();
+    my $order_repo = OrderHashRepository->new();
+    $order = $order_repo->find($ord_num);
     if($order) {
         $user_id = $order->user_id();
-        $user = $self->{'user_hash_repository'}->find($user_id);
+        $user = $user_repo->find($user_id);
         if ($user) {
             print "Pedido: $order->number()\n";
             print "Usuario: $user->username()\n";
@@ -148,12 +167,15 @@ sub state_order {
 }
 
 sub read_itinerary {
-    my ($self, $ord_num) = @_;
+    my $self = shift;
+    my $ord_num = shift;
     my ($order, $user_id, $user);
-    $order = $self{'order_hash_repository'}->find($ord_num);
+    my $user_repo = UserHashRepository->new();
+    my $order_repo = OrderHashRepository->new();
+    $order = $order_repo->find($ord_num);
     if($order) {
         $user_id = $order->user_id();
-        $user = $self->{'user_hash_repository'}->find($user_id);
+        $user = $user_repo->find($user_id);
         if ($user) {
             print "Pedido: $order->number()\n";
             print "Usuario: $user->username()\n";
