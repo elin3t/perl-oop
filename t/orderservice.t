@@ -96,8 +96,16 @@ is($output->get_output(), "Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, 
 $output = $order_service->read_itinerary('700');
 is($output->get_output(), 'Error: order not found', 'READ ITINERARY 1 --> ORDER NOT FOUND');
 
-
+# TEST 19
 $order_service->buy('dlalo','700','Elementos de jardin','2');
-
+$order_service->dispatch('700','1','Regadera', 'Diarco Moreno', '03112015');
+$output =$order_service->post_package('700','1', 'Faitful once', 'Regadera llego del deposito', '03112015');
+$order_service->dispatch('700','2','Tijeras', 'Diarco Moreno', '04112015');
+$output =$order_service->post_package('700','2', 'Faitful once', 'Tijera llego del deposito', '04112015');
+$output = $order_service->read_itinerary('700');
+my $expected = "Pedido: 700\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Enviado\nItinerario: \n          ";
+$expected .= "1: Regadera - Diarco Moreno (03112015), Enviado -\nFaitful once (03112015), Enviado -\n          2: Tijeras - ";
+$expected .= "Diarco Moreno (04112015), Enviado -\nFaitful once (04112015), Enviado -\n";
+is($output->get_output(), "$expected", 'READ ITINERARY 2 --> Successful itinerary read');
 
 done_testing();

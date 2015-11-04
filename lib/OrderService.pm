@@ -164,7 +164,7 @@ sub state_order {
         $str_out .= "Estado: " . $order->state() . "\n";
         $str_out .= "Paquetes:\n";
         foreach my $pkg ($order->package_list()) {
-        	$str_out .= " ". $pkg->number(). ": " . $pkg->contents() . "-" .  $pkg->location() . "\n";
+        	$str_out .= " ". $pkg->number(). ": " . $pkg->contents() . " - " .  $pkg->location() . "\n";
 	    }
         my $output = Output->new($str_out);
         return $output;
@@ -188,12 +188,12 @@ sub read_itinerary {
         $str_out .= "Usuario: ". $user->username() . "\n";
         $str_out .= "Nombre: " . $user->last_name(). ", " . $user->first_name() . "\n";
         $str_out .= "Estado: " . $order->state() . "\n";
+	    $str_out .= "Itinerario: \n";
         foreach my $pkg ($order->package_list()) {
-            $str_out .= "Itinerario: \n";
-            $str_out .= "          " . $pkg->number() . ": " . $pkg->contents() . "- ";
-            foreach my $itinerary ($pkg->itineraries()) {
-                $str_out .= $itinerary->location() . "(" . $itinerary->date() . ")" . ", " . $itinerary->description() . "\n";
-            }
+        	$str_out .= "          " . $pkg->number() . ": " . $pkg->contents() . " - ";
+        	foreach my $itinerary ($pkg->itineraries()) {
+        		$str_out .= $itinerary->location() . " (" . $itinerary->date()  . "), ". $pkg->state() . " -\n";
+        	}
         }
         my $output = Output->new($str_out);
         return $output;
