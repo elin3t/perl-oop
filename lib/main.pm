@@ -8,13 +8,13 @@ use Handler;
 
 sub main{
     my $self = shift;
-    my $filetoread = "../inputs/orders-input";
-    my $filetowrite = "output.txt";
+    my $filetoread = shift @ARGV || "../inputs/orders-input";
+    my $filetowrite = shift @ARGV || "output.txt";
     my $filetowriteerrors = shift @ARGV || "error.txt";
 
     my $handle = Handler->new();
     my $entries;
-    open ($entries, $filetoread);
+    open ($entries, '<:encoding(UTF-8)', $filetoread);
     my @data = <$entries>;
     close($entries);
     foreach my $line (@data){
