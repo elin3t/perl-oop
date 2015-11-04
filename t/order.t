@@ -33,6 +33,10 @@ sub new {
 sub name {
     return shift->{'name'};
 }
+
+sub state {
+    return "Enviado";
+}
 1;
 
 my $pack1 = P->new("p1");
@@ -43,17 +47,17 @@ use Test::More;# tests => 5;                      # last test to print
 use lib '../lib/';
 use Order;
 
-my $order = Order->new("pauriarte",122,"detalles orden",1);
+my $order = Order->new("pauriarte",122,"detalles orden", 5);
 
 is($order->user_id, "pauriarte", "user_id.");
 is($order->number, 122, "number");
 is($order->description, "detalles orden", "description");
-is($order->state, "Pendiente", "state");# Pending.
+is($order->state, "Pendiente", "initial state Pending");# Pending.
 $order->add_package($pack1);
 $order->add_package($pack2);
 my @package_list = $order->package_list;
 my ($p1,$p2) = @package_list;
 is($p1->name(),"p1", "add_package");
 is($p2->name(),"p2", "package_list");
-
+is($order->state, "Despachando", "state Despachando");
 done_testing();

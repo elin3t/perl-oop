@@ -17,7 +17,7 @@
 
 use strict;
 use warnings;
-use v5.18; 
+#use v5.18; 
 use Data::Dumper;
 
 package Order;
@@ -51,28 +51,29 @@ sub description {
 
 sub state {
     my $self = shift;
-    my ($send, $received);
+    my $send = 0;
+    my $received = 0;
     my $state = $self->{'state'};
-
+    
     foreach my $pkg ($self->package_list()) {
 	    if($pkg->state() eq "Enviado") {
-	        $send = 1;
+	        $send++;
 	    }
 	    elsif($pkg->state() eq "Recibido") {
-	        $received = 1;
+	        $received++;
 	    }
     }
-	
+
     if($send == 0 && $received == 0){
 	    $state = "Pendiente";
     }
-    elsif($send == 1 && $received == 1){
+    elsif($send >= 1 && $send < $self->package_number()){
         $state = "Despachando";
     }
-    elsif($send == 1 && $received == 0){
+    elsif($send == $self->package_number()){
 	    $state = "Enviado";
     }
-    elsif($send == 0 && $received == 1){
+    elsif($received == $self->package_number()){
 	    $state = "Entregado";
     }
 
