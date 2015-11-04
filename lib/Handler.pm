@@ -60,47 +60,41 @@ sub command_factory {
     given(shift @parameters){
         when (/A/){
             $command = AddUserCmd->new();
-            push $self->{'commands'}, $command;
         }
         when (/E/){
             $command = DelUserCmd->new();         
-            push $self->{'commands'}, $command;
         }
         when (/C/){
            $command = PurchaseCmd->new(); 
-            push $self->{'commands'}, $command;
         }
         when (/D/){
             $command = DispatchCmd->new();
-            push $self->{'commands'}, $command;
         }
         when (/P/){
             $command = PostaPkgCmd->new();
-            push $self->{'commands'}, $command;
         }
         when (/R/){
             $command = ReceptionCmd->new();    
-            push $self->{'commands'}, $command;
         }
         when (/Y/){
             $command = StateOrderCmd->new();
-            push $self->{'commands'}, $command;
         }
         when (/Z/){
             $command = ItineraryCmd->new();    
-            push $self->{'commands'}, $command;
         }
         when (/T/){                             #test command.
             $command = shift;    
-            push $self->{'commands'}, $command;
- 
         }
 
         default{
             my $error = Error->new("Error al parsear: ".$line);
             push $self->{'errors'}, $error;
         }
-    }   
+    } 
+
+    if($command){
+        push $self->{'commands'}, $command;
+    }
       return $command;
 }
 
