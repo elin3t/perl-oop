@@ -19,7 +19,7 @@ use strict;
 use warnings;
 use lib '../lib';
 use ItineraryCmd;
-use Error;
+use MyError;
 
 my @array = (456);
 my @array1 = (0);
@@ -43,7 +43,7 @@ sub read_itinerary {
         return Output->new("Invalid Order.");
     }
     else {
-        return Error->new("Order $order_number ok");
+        return MyError->new("Order $order_number ok");
     }
 }
 

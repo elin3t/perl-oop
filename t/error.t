@@ -21,9 +21,9 @@ use warnings;
 use Test::More;# tests => 1;                      # last test to print
 
 use lib '../lib';
-use Error;
+use MyError;
 
-my $error = Error->new("Error 2");
+my $error = MyError->new("Error 2");
 
 is($error->get_output,"Error 2","get_output");
 
