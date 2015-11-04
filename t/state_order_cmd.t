@@ -19,6 +19,8 @@ my $epurchase_cmd = StateOrderCmd->new(@eparameters);
 my $error = $epurchase_cmd->execute(OrderServiceFake->new());
 is( $error->get_output(), "El pedido '$eparameters[0]' no fue encontrado", "Error: the order does not exist");
 
+done_testing();
+
 
 package OrderServiceFake;
 
