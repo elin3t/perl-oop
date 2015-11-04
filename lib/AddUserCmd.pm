@@ -6,7 +6,7 @@ use parent 'Command';
 
 use UserService;
 use Output;
-use Error;
+use MyError;
 
 our @ISA = qw(Command);
 
@@ -22,7 +22,7 @@ sub execute {
     if ($user_service->add_user($username, $first_name, $last_name)) {
         $to_return = Output->new("Usuario $username agregado" );
     } else {
-        $to_return = Error->new("El usuario $username ya existe");
+        $to_return = MyError->new("El usuario $username ya existe");
     }
     return $to_return;
 }

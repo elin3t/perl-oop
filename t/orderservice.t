@@ -74,23 +74,23 @@ is($output->get_output(), 'Error: order not found', 'STATE ORDER 1 --> ORDER NOT
 # TEST 14
 $order_service->buy('dlalo','600','Elementos de cocina','2');
 $output = $order_service->state_order('600');
-is($output->get_output(), "Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Pendiente\nPaquetes:\n", 'STATE ORDER 2 --> PENDIENTE');
+is($output->get_output(), "=============\nPedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Pendiente\nPaquetes:\n=============", 'STATE ORDER 2 --> PENDIENTE');
 
 # TEST 15
 $order_service->dispatch('600','1','Microondas', 'Rodo sede microcentro', '02112015');
 $output = $order_service->state_order('600');
-is($output->get_output(), "Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Despachando\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n", 'STATE ORDER 3 --> DESPACHANDO');
+is($output->get_output(), "=============\nPedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Despachando\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n=============", 'STATE ORDER 3 --> DESPACHANDO');
 
 # TEST 16
 $order_service->dispatch('600','2','Lavarropas', 'Rodo sede boedo', '03112015');
 $output = $order_service->state_order('600');
-is($output->get_output(), "Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Enviado\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n 2: Lavarropas - Rodo sede boedo\n",'STATE ORDER 4 --> ENVIADO');
+is($output->get_output(), "=============\nPedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Enviado\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n 2: Lavarropas - Rodo sede boedo\n=============",'STATE ORDER 4 --> ENVIADO');
 
 # TEST 17
 $order_service->reception_package('600','1', 'Mi casa', '04112015');
 $order_service->reception_package('600','2', 'Mi casa', '04112015');
 $output = $order_service->state_order('600');
-is($output->get_output(), "Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Entregado\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n 2: Lavarropas - Rodo sede boedo\n", 'STATE ORDER 5 --> ENTREGADO');
+is($output->get_output(), "=============\nPedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Entregado\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n 2: Lavarropas - Rodo sede boedo\n=============", 'STATE ORDER 5 --> ENTREGADO');
 
 # TEST 18
 $output = $order_service->read_itinerary('700');
@@ -103,9 +103,9 @@ $output =$order_service->post_package('700','1', 'Faitful once', 'Regadera llego
 $order_service->dispatch('700','2','Tijeras', 'Diarco Moreno', '04112015');
 $output =$order_service->post_package('700','2', 'Faitful once', 'Tijera llego del deposito', '04112015');
 $output = $order_service->read_itinerary('700');
-my $expected = "Pedido: 700\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Enviado\nItinerario: \n          ";
+my $expected = "=============\nPedido: 700\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Enviado\nItinerario: \n          ";
 $expected .= "1: Regadera - Diarco Moreno (03112015), Enviado -\nFaitful once (03112015), Enviado -\n          2: Tijeras - ";
-$expected .= "Diarco Moreno (04112015), Enviado -\nFaitful once (04112015), Enviado -\n";
+$expected .= "Diarco Moreno (04112015), Enviado -\nFaitful once (04112015), Enviado -\n=============";
 is($output->get_output(), "$expected", 'READ ITINERARY 2 --> Successful itinerary read');
 
 done_testing();
