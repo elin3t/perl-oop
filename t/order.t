@@ -47,7 +47,7 @@ use Test::More;# tests => 5;                      # last test to print
 use lib '../lib/';
 use Order;
 
-my $order = Order->new("pauriarte",122,"detalles orden",1);
+my $order = Order->new("pauriarte",122,"detalles orden", 5);
 
 is($order->user_id, "pauriarte", "user_id.");
 is($order->number, 122, "number");
@@ -59,5 +59,5 @@ my @package_list = $order->package_list;
 my ($p1,$p2) = @package_list;
 is($p1->name(),"p1", "add_package");
 is($p2->name(),"p2", "package_list");
-is($order->state, "Enviado", "state Enviado");
+is($order->state, "Despachando", "state Despachando");
 done_testing();
