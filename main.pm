@@ -14,12 +14,16 @@ sub main{
     open my $entries, $filetoread or "Could not open the file: $filetoread";
     open(my $output, '>', $filetowrite) or die "Could not open file '$filetowrite' $!";
     open(my $errors, '>', $filetowriteerrors) or die "Could not open file '$filetowriteerrors' $!";
-
+    my $handle = Handler->new();
     while(my $line = <$entries>){
-
+        $handle->command_factory($line);
+        $handle->run_command();
+        print $output $handle->get_output();
     }
-
-    close($filetoread);
+    print $errors $handle->print_errors();
+    close($entries);
+    close($output);
+    close($errors);
 }
 
 main();
