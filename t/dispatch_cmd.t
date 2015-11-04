@@ -36,6 +36,7 @@ $dispatch_cmd = DispatchCmd->new(@parameters2);
 my $output2 = $dispatch_cmd->execute();
 is($output2->get_output(),"El pedido '$parameters2[0]' no fue encontrado", "order not found");
 
+unmock_all();
 done_testing();
 
 1;
