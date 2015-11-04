@@ -11,7 +11,7 @@ use Error;
 our @ISA = qw(Command);
 
 
-sub excecute {
+sub execute {
 
     my $self = shift;
     my $user_service = shift || UserService->new();
