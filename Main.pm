@@ -40,7 +40,7 @@ sub main{
     my $filetowrite = shift;
     my $handle = shift;
     my $self = shift;
-    my $filetoread = shift @ARGV || "input.txt" || die "no file to read!";
+    my $filetoread = shift @ARGV || "inputs/orders-input" || die "no file to read!";
     my $filetowrite = shift @ARGV || "output.txt";
     my $filetowriteerrors = shift @ARGV || "error.txt";
 
