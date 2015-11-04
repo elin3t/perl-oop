@@ -92,4 +92,12 @@ $order_service->reception_package('600','2', 'Mi casa', '04112015');
 $output = $order_service->state_order('600');
 is($output->get_output(), "Pedido: 600\nUsuario: dlalo\nNombre: dlalo_lastname, dlalo_firstname\nEstado: Entregado\nPaquetes:\n 1: Microondas - Rodo sede microcentro\n 2: Lavarropas - Rodo sede boedo\n", 'STATE ORDER 5 --> ENTREGADO');
 
+# TEST 18
+$output = $order_service->read_itinerary('700');
+is($output->get_output(), 'Error: order not found', 'READ ITINERARY 1 --> ORDER NOT FOUND');
+
+
+$order_service->buy('dlalo','700','Elementos de jardin','2');
+
+
 done_testing();

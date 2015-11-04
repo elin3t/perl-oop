@@ -184,15 +184,15 @@ sub read_itinerary {
     if($order) {
         $user_id = $order->user_id();
         $user = $user_repo->find($user_id);
-        $str_out = "Pedido: $order->number()\n";
-        $str_out .= "Usuario: $user->username()\n";
-        $str_out .= "Nombre: $user->last_name(), $user->first_name()\n";
-        $str_out .= "Estado: $order->state()\n";
-        foreach my $pkg (@{$order->package_list()}) {
+        $str_out = "Pedido: " . $order->number() . "\n";
+        $str_out .= "Usuario: ". $user->username() . "\n";
+        $str_out .= "Nombre: " . $user->last_name(). ", " . $user->first_name() . "\n";
+        $str_out .= "Estado: " . $order->state() . "\n";
+        foreach my $pkg ($order->package_list()) {
             $str_out .= "Itinerario: \n";
-            $str_out .= "          $pkg->number(): $pkg->contents() - ";
-            foreach my $itinerary (@{$pkg->itineraries()}) {
-                $str_out .= "$itinerary->location() ($itinerary->date()), $itinerary->description()\n";
+            $str_out .= "          " . $pkg->number() . ": " . $pkg->contents() . "- ";
+            foreach my $itinerary ($pkg->itineraries()) {
+                $str_out .= $itinerary->location() . "(" . $itinerary->date() . ")" . ", " . $itinerary->description() . "\n";
             }
         }
         my $output = Output->new($str_out);
