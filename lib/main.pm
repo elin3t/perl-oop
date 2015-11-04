@@ -3,6 +3,7 @@ use strict;
 use warnings FATAL => 'all';
 use v5.18;
 use Data::Dumper;
+use lib './';
 use Handler;
 
 sub main{
@@ -13,19 +14,20 @@ sub main{
 
     my $handle = Handler->new();
     my $entries;
-    open ($entries, '<' ,$filetoread);
-    while(my $line = <$entries>){
+    open ($entries, $filetoread);
+    my @data = <$entries>;
+    close($entries);
+    foreach my $line (@data){
         chomp $line;
-        print "$line\n";
         $handle->command_factory($line);
     }
-    close($entries);
+
     open(my $output, '>:encoding(UTF-8)', $filetowrite) or die "Could not open file '$filetowrite' $!";
     my $op = $handle->run_commands();
     print $output $op;
     close($output);
 
-    if(scalar $handle->{'errors'}){
+    if(scalar @{$handle->{'errors'}}){
         open(my $errors, '>', $filetowriteerrors) or die "Could not open file '$filetowriteerrors' $!";
         print $errors $handle->print_errors();
         close($errors);
@@ -37,6 +39,4 @@ sub main{
 main();
 
 1;
-
-main();
 __END__

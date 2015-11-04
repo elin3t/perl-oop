@@ -3,6 +3,7 @@ use strict;
 use warnings FATAL => 'all';
 
 use UserHashRepository;
+use OrderHashRepository;
 use User;
 
 my $singleton_user_service = undef;
@@ -33,9 +34,14 @@ sub delete_user {
     my $self = shift;
     my $username = shift;
     my $userRepository = UserHashRepository->new();
+    my $orderhash = OrderHashRepository->new();
     my $user = $userRepository->find($username);
     if ($user)
     {
+        foreach my $myorder (@{$user->get_order_list}){
+            $orderhash->delete($myorder->{number});
+        }
+
         return $userRepository->delete($username);
 
     }

@@ -25,7 +25,7 @@ use DispatchCmd;
 use ReceptionCmd;
 use StateOrderCmd;
 use ItineraryCmd;
-use Error;
+use MyError;
 use v5.18;
 
 package Handler;
@@ -86,7 +86,7 @@ sub command_factory {
         }
 
         default{
-            my $error = Error->new("Error al parsear: ".$line);
+            my $error = MyError->new("Error al parsear: ".$line);
             push $self->{'errors'}, $error;
         }
     } 
@@ -103,7 +103,8 @@ sub run_commands {
     my $text;
     for my $command (@list){
         my $output = $command->execute;
-        if ($output->isa("Error")) {
+        if ($output->isa("MyError")) {
+            $text.= "Error\n";
             push $self->{'errors'}, $output;
         }
        else {

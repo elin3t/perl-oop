@@ -1,7 +1,7 @@
 #
 #===============================================================================
 #
-#         FILE: Error.pm
+#         FILE: MyError.pm
 #
 #  DESCRIPTION: 
 #
@@ -17,8 +17,8 @@
 
 use strict;
 use warnings;
-use Output;
+use parent 'Output';
 
-package Error;
+package MyError;
     our @ISA = qw(Output);   
 1;

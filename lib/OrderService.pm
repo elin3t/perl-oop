@@ -26,7 +26,7 @@ use Order;
 use Itinerary;
 use Package;
 use Output;
-use Error;
+use MyError;
 
 my $singleton_order_service = undef;
 
@@ -49,18 +49,19 @@ sub buy {
     if($user) {
         my $order = $order_repo->find($ord_num);
         if($order) {
-            my $error = Error->new("Error: order exists");
-            return $error;
+            my $MyError = MyError->new("Error: order exists");
+            return $MyError;
         } else {
             $order = Order->new($user_id, $ord_num, $description, $amount_of_pkgs);
             $order_repo->add($order);
+            $user->add_order($order);
             my $output = Output->new("Compra '$ord_num' registrada");
             return $output;
 
         }
     } else {
-        my $error = Error->new("Error: user not found");
-        return $error;
+        my $MyError = MyError->new("Error: user not found");
+        return $MyError;
     }
 }
 
@@ -80,12 +81,12 @@ sub dispatch {
             my $output = Output->new("El paquete '$pkg_num' del Pedido '$ord_num' despachado");
             return $output;
         } else {
-            my $error = Error->new("Error: el pedido '$ord_num' ya posee todos los paquetes");
-            return $error;
+            my $MyError = MyError->new("Error: el pedido '$ord_num' ya posee todos los paquetes");
+            return $MyError;
         }
     } else {
-        my $error = Error->new("Error: order not found");
-        return $error;
+        my $MyError = MyError->new("Error: order not found");
+        return $MyError;
     }
 }
 
@@ -109,12 +110,12 @@ sub post_package {
             my $output = Output->new("Posta del paquete '$pkg_num' del Pedido '$ord_num' registrada");
             return $output;
         } else {
-            my $error = Error->new("Error: package not found");
-            return $error;
+            my $MyError = MyError->new("Error: package not found");
+            return $MyError;
         }
     } else {
-        my $error = Error->new("Error: order not found");
-        return $error;
+        my $MyError = MyError->new("Error: order not found");
+        return $MyError;
     }
 }
 
@@ -139,12 +140,12 @@ sub reception_package {
             my $output = Output->new("Paquete '$pkg_num' del Pedido '$ord_num' recibido");
             return $output;
         } else {
-            my $error = Error->new("Error: package not found");
-            return $error;
+            my $MyError = MyError->new("Error: package not found");
+            return $MyError;
         }
     } else {
-        my $error = Error->new("Error: order not found");
-        return $error;
+        my $MyError = MyError->new("Error: order not found");
+        return $MyError;
     }
 }
 
@@ -158,19 +159,21 @@ sub state_order {
     if($order) {
         $user_id = $order->user_id();
         $user = $user_repo->find($user_id);
-        $str_out = "Pedido: " . $order->number() . "\n";
-        $str_out .= "Usuario: " .  $user->username() ."\n";
+        $str_out = "=============\n";
+        $str_out .= "Pedido: " . $order->number() . "\n";
+        $str_out .= "Usuario: " . $user->username() ."\n";
         $str_out .= "Nombre: ". $user->last_name() . ", " . $user->first_name() . "\n";
         $str_out .= "Estado: " . $order->state() . "\n";
         $str_out .= "Paquetes:\n";
         foreach my $pkg ($order->package_list()) {
         	$str_out .= " ". $pkg->number(). ": " . $pkg->contents() . " - " .  $pkg->location() . "\n";
 	    }
+        $str_out .= "=============";
         my $output = Output->new($str_out);
         return $output;
     } else {
-        my $error = Error->new("Error: order not found");
-        return $error;
+        my $MyError = MyError->new("Error: order not found");
+        return $MyError;
     }
 }
 
@@ -184,7 +187,8 @@ sub read_itinerary {
     if($order) {
         $user_id = $order->user_id();
         $user = $user_repo->find($user_id);
-        $str_out = "Pedido: " . $order->number() . "\n";
+        $str_out = "=============\n";
+        $str_out .= "Pedido: " . $order->number() . "\n";
         $str_out .= "Usuario: ". $user->username() . "\n";
         $str_out .= "Nombre: " . $user->last_name(). ", " . $user->first_name() . "\n";
         $str_out .= "Estado: " . $order->state() . "\n";
@@ -195,11 +199,12 @@ sub read_itinerary {
         		$str_out .= $itinerary->location() . " (" . $itinerary->date()  . "), ". $pkg->state() . " -\n";
         	}
         }
+        $str_out .= "=============";
         my $output = Output->new($str_out);
         return $output;
     } else {
-        my $error = Error->new("Error: order not found");
-        return $error;
+        my $MyError = MyError->new("Error: order not found");
+        return $MyError;
     }
 }
 
