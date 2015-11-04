@@ -17,7 +17,7 @@
 
 use strict;
 use warnings;
-use v5.18; 
+#use v5.18; 
 use Data::Dumper;
 
 package Order;
@@ -51,7 +51,8 @@ sub description {
 
 sub state {
     my $self = shift;
-    my ($send, $received);
+    my $send = 0;
+    my $received = 0;
     my $state = $self->{'state'};
 
     foreach my $pkg ($self->package_list()) {
