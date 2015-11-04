@@ -17,36 +17,73 @@
 
 use strict;
 use warnings;
-
-use Test::More;#tests => 1;                      # last test to print
 use lib '../lib';
 use Handler;
+use Error;
+
+package TestCmd;
+
+sub new {
+ my $class = shift;
+ my $name = $_[0];
+ my $self = {
+    name => $name
+ };
+
+ bless $self, $class;
+ return $self;
+}
+
+sub execute {
+    my $self = shift;
+    my $name = $self->{'name'};
+    $name.= " comando prueba";
+    my $output;
+    if ($self->{'name'} == 0){
+        $output = Error->new($name);
+    }
+    else{
+        $output = Output->new($name);
+    }
+    return $output;
+}
+
+1;
+
+use Test::More;
 
 my $handler = Handler->new();
+my $test_cmd = TestCmd->new(1);
+my $test_cmd1 = TestCmd->new(2);
+my $test_cmd2 = TestCmd->new(0);
 
-my $command = $handler->command_factory("A");
-is($command->isa('AddUserCmd'),1,"command_factory addusercmd");
+my $command = $handler->command_factory('T', $test_cmd);
+is($command->isa('TestCmd'),1,"command_factory");
 
-$handler->run_command();
+$handler->command_factory('T', $test_cmd1);
+$handler->command_factory('T', $test_cmd2);
 
+is($handler->run_command(), "1 comando prueba\n2 comando prueba\n", "run_command");
 
-$command = $handler->command_factory("E");
-is($command->isa('DelUserCmd'),1,"command_factory delusercmd");
+is($handler->print_errors(), "0 comando prueba\n", "print_errors");
 
-$command = $handler->command_factory("P");
-is($command->isa('PostaPkgCmd'),1,"command_factory postapkgcmd");
+#$command = $handler->command_factory("E");
+#is($command->isa('DelUserCmd'),1,"command_factory delusercmd");
 
-$command = $handler->command_factory("R");
-is($command->isa('ReceptionCmd'),1,"command_factory receptioncmd");
+#$command = $handler->command_factory("P");
+#is($command->isa('PostaPkgCmd'),1,"command_factory postapkgcmd");
 
-$command = $handler->command_factory("Z");
-is($command->isa('ItineraryCmd'),1,"command_factory itinerarycmd");
+#$command = $handler->command_factory("R");
+#is($command->isa('ReceptionCmd'),1,"command_factory receptioncmd");
 
-my $command = $handler->command_factory("C");
-is($command->isa('PurchaseCmd'),1,"command_factory purchasecmd");
+#$command = $handler->command_factory("Z");
+#is($command->isa('ItineraryCmd'),1,"command_factory itinerarycmd");
 
-my $command = $handler->command_factory("D");
-is($command->isa('DispatchCmd'),1,"command_factory dispatchcmd");
+#$command = $handler->command_factory("C");
+#is($command->isa('PurchaseCmd'),1,"command_factory purchasecmd");
+
+#$command = $handler->command_factory("D");
+#is($command->isa('DispatchCmd'),1,"command_factory dispatchcmd");
 
 #my $command = $handler->command_factory("Y");
 #is($command->isa('StateOrderCmd'),1,"command_factory stateordercmd");

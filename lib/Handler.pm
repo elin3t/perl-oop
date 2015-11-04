@@ -17,7 +17,6 @@
 
 use strict;
 use warnings;
-use v5.18;
 use AddUserCmd;
 use DelUserCmd;
 use PurchaseCmd;
@@ -27,6 +26,9 @@ use ReceptionCmd;
 #use StateOrderCmd;
 use ItineraryCmd;
 use Error;
+
+use v5.18;
+use Data::Dumper;
 
 package Handler;
 
@@ -55,7 +57,9 @@ sub command_factory {
     my $line = shift;
     my @parameters = $self->$parse_line($line);
     my $command;
-   
+    
+     
+    use v5.18; 
     given(shift @parameters){
         when (/A/){
             $command = AddUserCmd->new();
@@ -89,6 +93,11 @@ sub command_factory {
             $command = ItineraryCmd->new();    
             push $self->{'commands'}, $command;
         }
+        when (/T/){                             #test command.
+            $command = shift;    
+            push $self->{'commands'}, $command;
+ 
+        }
 
         default{
             my $error = Error->new("Error al parsear: ".$line);
@@ -101,25 +110,27 @@ sub command_factory {
 sub run_command {
     my $self = shift;
     my @list = @{$self->{'commands'}};
-
+    my $text;
     for my $command (@list){
         my $output = $command->execute;
         if ($output->isa("Error")) {
             push $self->{'errors'}, $output;
         }
         else {
-            say $output->get_output();
+            $text.= $output->get_output()."\n";
         }
     }
+    return $text;
 }
 
 sub print_errors {
     my $self = shift;
     my @list =  @{$self->{'errors'}};
-    
+    my $text;
     for my $error (@list){
-        say $error->get_output();
+        $text .= $error->get_output()."\n";
     }
+    return $text;
 }
 
 1;
