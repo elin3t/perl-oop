@@ -27,6 +27,9 @@ my $handler = Handler->new();
 my $command = $handler->command_factory("A");
 is($command->isa('AddUserCmd'),1,"command_factory addusercmd");
 
+$handler->run_command();
+
+
 $command = $handler->command_factory("E");
 is($command->isa('DelUserCmd'),1,"command_factory delusercmd");
 
