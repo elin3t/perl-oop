@@ -26,6 +26,7 @@ is($result->isa('Output'), 1, 'Result must be an instance of output');
 
 my $add_user_cmd = AddUserCmd->new('repeated', 'first_name' , 'lastName');
 my $result = $add_user_cmd->execute();
-is($result->isa('Error'), 1, 'Result must be an instance of error if the username is repeated');
+is($result->isa('MyError'), 1, 'Result must be an instance of error if the
+username is repeated');
 is ($result->get_output, "El usuario repeated ya existe", "User repetead not added");
 done_testing();
