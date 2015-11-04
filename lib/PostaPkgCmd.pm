@@ -6,11 +6,11 @@ use parent 'Command';
 
 use OrderService;
 use Output;
-use Error;
+use MyError;
 
 our @ISA = qw(Command);
 
-sub excecute {
+sub execute {
 
     my $self = shift;
     my $order_service = shift || OrderService->new();

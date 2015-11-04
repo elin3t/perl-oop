@@ -17,7 +17,7 @@
 
 use strict;
 use warnings;
-use Command;
+use parent 'Command';
 use OrderService;
 
 package ItineraryCmd;
