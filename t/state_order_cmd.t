@@ -5,7 +5,7 @@ use Test::More;
 
 use lib '../lib';
 use StateOrderCmd;
-use Error;
+use MyError;
 
 #check the status of an order
 my @parameters = ('95332');
@@ -35,7 +35,7 @@ sub state_order{
     if($ord_num eq '95332'){
         return Output->new("Pedido: 95332 \nNombre: jjlopez");
     }else {
-        return Error->new("El pedido '$ord_num' no fue encontrado");
+        return MyError->new("El pedido '$ord_num' no fue encontrado");
     }
 }
 

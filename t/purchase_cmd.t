@@ -5,7 +5,7 @@ use Test::More;
 
 use lib '../lib';
 use PurchaseCmd;
-use Error;
+use MyError;
 
 #create one order to test
 my @parameters = ('jjlopez', '50312', 'paquete de prueba', '3');
@@ -36,11 +36,11 @@ sub buy{
     my $self = shift;
     my ($user_id, $ord_num, $description, $amount_of_pkgs) = @_;
     if($ord_num eq "95332"){
-        return Error->new("El pedido '95332' ya fue ingresado al sistema");
+        return MyError->new("El pedido '95332' ya fue ingresado al sistema");
     }elsif($user_id eq "jjlopez"){
         return Output->new("Compra '$ord_num' registrada");
     }
-    return Error->new("El usuario '$user_id' no fue encontrado");
+    return MyError->new("El usuario '$user_id' no fue encontrado");
 }
 
 1;

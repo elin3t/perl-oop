@@ -2,8 +2,7 @@
 package StateOrderCmd;
 use strict;
 use warnings FATAL => 'all';
-use v5.18;
-use parent qw(Command);
+use parent 'Command';
 
 use OrderService;
 
