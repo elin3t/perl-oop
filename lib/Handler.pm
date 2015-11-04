@@ -59,28 +59,28 @@ sub command_factory {
     use v5.18; 
     given(shift @parameters){
         when (/A/){
-            $command = AddUserCmd->new();
+            $command = AddUserCmd->new(@parameters);
         }
         when (/E/){
-            $command = DelUserCmd->new();         
+            $command = DelUserCmd->new(@parameters);         
         }
         when (/C/){
-           $command = PurchaseCmd->new(); 
+           $command = PurchaseCmd->new(@parameters); 
         }
         when (/D/){
-            $command = DispatchCmd->new();
+            $command = DispatchCmd->new(@parameters);
         }
         when (/P/){
-            $command = PostaPkgCmd->new();
+            $command = PostaPkgCmd->new(@parameters);
         }
         when (/R/){
-            $command = ReceptionCmd->new();    
+            $command = ReceptionCmd->new(@parameters);    
         }
         when (/Y/){
-            $command = StateOrderCmd->new();
+            $command = StateOrderCmd->new(@parameters);
         }
         when (/Z/){
-            $command = ItineraryCmd->new();    
+            $command = ItineraryCmd->new(@parameters);    
         }
         when (/T/){                             #test command.
             $command = shift;    
