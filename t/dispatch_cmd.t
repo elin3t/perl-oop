@@ -5,16 +5,16 @@ use Test::More;
 use Test::MockModule;
 use lib '../lib';
 use DispatchCmd;
-use Error;
+use MyError;
 
 my $module = Test::MockModule->new('OrderService');
 $module->mock(dispatch => sub{
 	my $self = shift;
     my ($order, $package , $content, $location, $date) = @_;
     if($order eq "33333"){
-        return Error->new("El pedido '33333' no fue encontrado");
+        return MyError->new("El pedido '33333' no fue encontrado");
     }elsif($order eq "99999"){
-        return Error->new("El pedido '99999' ya posee todos los paquetes");
+        return MyError->new("El pedido '99999' ya posee todos los paquetes");
     }
     return Output->new("El paquete '$package' del pedido '$order' despachado");
 	}
@@ -36,7 +36,6 @@ $dispatch_cmd = DispatchCmd->new(@parameters2);
 my $output2 = $dispatch_cmd->execute();
 is($output2->get_output(),"El pedido '$parameters2[0]' no fue encontrado", "order not found");
 
-unmock_all();
 done_testing();
 
 1;
