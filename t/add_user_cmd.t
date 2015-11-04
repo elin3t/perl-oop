@@ -3,31 +3,11 @@ use strict;
 use warnings;
 use Test::More;
 use lib '../lib';
+use Test::MockModule;
 use AddUserCmd;
 
-my $user_service = UserServiceFake->new();
-my $add_user_cmd = AddUserCmd->new('no-repeated', 'first_name' , 'lastName');
-
-my $result = $add_user_cmd->execute($user_service);
-is ($result->get_output, "Usuario no-repeated agregado", "User added ok");
-is($result->isa('Output'), 1, 'Result must be an instance of output');
-
-my $add_user_cmd = AddUserCmd->new('repeated', 'first_name' , 'lastName');
-my $result = $add_user_cmd->execute($user_service);
-is($result->isa('Error'), 1, 'Result must be an instance of error if the username is repeated');
-is ($result->get_output, "El usuario repeated ya existe", "User repetead not added");
-done_testing();
-
-
-package UserServiceFake;
-
-sub new {
-    my $class = shift;
-    my $self = {};
-    return  bless $self, $class;
-}
-
-sub add_user {
+my $module = Test::MockModule->new('UserService');
+$module->mock( add_user => sub  {
     my $self = shift;
     my $username = shift;
 
@@ -36,4 +16,16 @@ sub add_user {
     } else {
         return 0;
     }
-}
+} );
+
+my $add_user_cmd = AddUserCmd->new('no-repeated', 'first_name' , 'lastName');
+
+my $result = $add_user_cmd->execute();
+is ($result->get_output, "Usuario no-repeated agregado", "User added ok");
+is($result->isa('Output'), 1, 'Result must be an instance of output');
+
+my $add_user_cmd = AddUserCmd->new('repeated', 'first_name' , 'lastName');
+my $result = $add_user_cmd->execute();
+is($result->isa('Error'), 1, 'Result must be an instance of error if the username is repeated');
+is ($result->get_output, "El usuario repeated ya existe", "User repetead not added");
+done_testing();
