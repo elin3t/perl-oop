@@ -98,7 +98,7 @@ sub command_factory {
       return $command;
 }
 
-sub run_command {
+sub run_commands {
     my $self = shift;
     my @list = @{$self->{'commands'}};
     my $text;
@@ -107,7 +107,7 @@ sub run_command {
         if ($output->isa("Error")) {
             push $self->{'errors'}, $output;
         }
-        else {
+       else {
             $text.= $output->get_output()."\n";
         }
     }

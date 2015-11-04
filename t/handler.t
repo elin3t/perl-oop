@@ -63,7 +63,7 @@ is($command->isa('TestCmd'),1,"command_factory");
 $handler->command_factory('T', $test_cmd1);
 $handler->command_factory('T', $test_cmd2);
 
-is($handler->run_command(), "1 comando prueba\n2 comando prueba\n", "run_command");
+is($handler->run_commands(), "1 comando prueba\n2 comando prueba\n", "run_command");
 
 is($handler->print_errors(), "0 comando prueba\n", "print_errors");
 
