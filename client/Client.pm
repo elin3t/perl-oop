@@ -59,8 +59,6 @@ sub make_url {
 
 sub command_factory {
     my $self = shift;
-    my $request;
-
     my $filetowrite = "output.txt";
     my $filetowriteerrors = "error.txt";
     my $inputfile = "input.txt";
@@ -79,8 +77,10 @@ sub command_factory {
         my $decoded_json = decode_json( $json );
 
         # you'll get this (it'll print out); comment this when done.
-        print Dumper $decoded_json->{command};
-
+        print $output $decoded_json->{output};
+        if($decoded_json->{error} ne ""){
+            print $error $decoded_json->{error};
+        }
 
     }
     close($output);
