@@ -27,6 +27,8 @@ package Client;
 use LWP::Simple;                # From CPAN
 use JSON qw( decode_json );     # From CPAN
 use Data::Dumper;
+use URL::Encode qw( url_encode);
+
 
 sub new{
     my $class = shift;
@@ -48,8 +50,9 @@ my $parse_line = sub {
 
 sub make_url {
     my $self = shift;
-    my $line = shift;
-    my $myurl = "http://127.0.0.1/cgi-bin/echo.pl?$line";
+    my $line = url_encode shift;
+    print $line."\n";
+    my $myurl = "http://127.0.0.1/cgi-bin/echo.pl?command=$line";
     return $myurl;
 }
 
@@ -61,22 +64,22 @@ sub command_factory {
     my $filetowrite = "output.txt";
     my $filetowriteerrors = "error.txt";
     my $inputfile = "input.txt";
-    open(my $input, '<:encoding(UTF-8)', $inputfile) or die "error opening";
+    open(my $input, '<', $inputfile) or die "error opening";
     open(my $output, '>:encoding(UTF-8)', $filetowrite) or die "Could not open file '$filetowrite' $!";
     open(my $error, '>:encoding(UTF-8)', $filetowriteerrors) or die "Could not open file '$filetowriteerrors' $!";
     while(my $line = <$input>){
 
         chomp($line);
         my $url = $self->make_url($line);
-
-        my $json = get( $url );
+        #print $url."\n";
+        my $json = get( $url);
         die "Could not get $url!" unless defined $json;
 
         # Decode the entire JSON
         my $decoded_json = decode_json( $json );
 
         # you'll get this (it'll print out); comment this when done.
-        print Dumper $decoded_json->{output};
+        print Dumper $decoded_json->{command};
 
 
     }
