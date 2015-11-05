@@ -45,7 +45,6 @@ $orderFinded = $orderRepository->find('the_number');
 
 is($orderFinded, 0, 'Can delete order');
 
-my $orderRepository2 = OrderHashRepository->new();
 
 done_testing();
 
