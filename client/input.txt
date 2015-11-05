@@ -1,0 +1,19 @@
+A,jjlopez,López,Juan José
+A,jperez,Perez,Juan
+C,jjlopez,50012,Figuras coleccionables de Star Wars,3
+C,jperez,50013,Figuras no coleccionables de Star Wars,8
+D,50012,1,Figura coleccionable de Darth Vader,Indianapolis-USA,20111219
+D,50012,2,Figura coleccionable del Macaco blanco chico,Montevideo-UY,20111219
+D,50013,1,Figura coleccionable del Macaco amarillo grande,BuenosAires-AR,20111219
+P,50012,1,Bogota/Colombia,Envio Aéreo - AlasUY,20111222
+P,50012,2,LaHabana/Cuba,Envio Aéreo - AlasUY,20111223
+P,50013,1,Kiev/Ucrania,Envio Aéreo - AlasUY,20111224
+P,50013,1,Caracas/Venezuela,Envio Aéreo - AlasUY,20111224
+R,50012,1,GlobantUY,20111230
+R,50012,2,GlobantAR,20111230
+R,50013,1,GlobantUKR o.0,20111230
+Y,50012
+Z,50012
+Y,50013
+E,jperez
+Z,50013
