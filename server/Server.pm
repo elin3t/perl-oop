@@ -20,10 +20,11 @@ my $error = "";
 if(scalar @{$handler->{'errors'}}) {
     $error = $handler->print_errors();
 }
-delete $handler;
+
 print $q->header('application/json;charset=UTF-8');
 my $json->{"output"} = "$op";
 $json->{"error"} = "$error";
+$json->{'command'}="$value";
 my $json_text = to_json($json);
 print $json_text;
 
