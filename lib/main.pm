@@ -13,6 +13,8 @@ sub main{
     $rep->add($user);
 
     my $user2 = $rep->find('juan');
+
+    $rep->delete('juan');
     print Dumper \$user2;
 }
 main();
