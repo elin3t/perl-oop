@@ -6,6 +6,7 @@ use Data::Dumper;
 use lib '/';
 use UserHashRepository;
 use OrderHashRepository;
+use Order;
 use User;
 sub main{
 
@@ -17,7 +18,10 @@ sub main{
 
     #$rep->delete('juan');
     my $repOrder = OrderHashRepository->new();
-    my $order = $repOrder->find(1);
+
+    my $newOrder = Order->new('manuel', 3, 'description', 40);
+    $repOrder->add($newOrder);
+    my $order = $repOrder->find(3);
     print Dumper \$order;
 }
 main();

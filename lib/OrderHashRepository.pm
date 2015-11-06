@@ -14,10 +14,15 @@ sub add{
     my $self = shift;
     my $order = shift;
 
-    if ($self->SUPER::find($order->number)) {
+
+    if ($self->find($order->number)) {
         return 0
     } else {
-        $self->SUPER::add($order->number, $order);
+        my $sql = "INSERT INTO `order` (user_username, order_number,
+            order_description, package_number, order_state) VALUES (?,?,?,?,?)";
+        my $stmt = $self->{dbh}->prepare($sql);
+        $stmt->execute($order->user_id, $order->number, $order->description,
+        $order->package_number, $order->state);
         return 1;
     }
 }
