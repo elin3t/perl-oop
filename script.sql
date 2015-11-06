@@ -44,8 +44,8 @@ DROP TABLE IF EXISTS `order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `order` (
-  `order_number` int(11) NOT NULL,
   `user_username` varchar(40) NOT NULL,
+  `order_number` int(11) NOT NULL,
   `order_description` varchar(45) DEFAULT NULL,
   `package_number` int(11) DEFAULT NULL,
   `order_state` varchar(45) DEFAULT NULL,
@@ -64,9 +64,9 @@ DROP TABLE IF EXISTS `package`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `package` (
   `package_number` int(11) NOT NULL,
-  `package_state` varchar(45) DEFAULT NULL,
   `package_location` varchar(45) DEFAULT NULL,
   `package_contents` varchar(45) DEFAULT NULL,
+  `package_state` varchar(45) DEFAULT NULL,
   `order_number` int(11) NOT NULL,
   PRIMARY KEY (`package_number`),
   KEY `fk_package_order_idx` (`order_number`),
@@ -98,4 +98,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-06 11:55:14
+-- Dump completed on 2015-11-06 15:06:26
