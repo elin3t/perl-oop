@@ -30,7 +30,9 @@ sub insert {
     my $package = shift;
     my $dbh = $self->{'dbh'};
 
-    my $insert = $dbh->prepare(q{INSERT INTO package (package_number, package_state, package_location, package_contents,order_number) VALUES (?, ?, ?, ?)});
+    my $insert = $dbh->prepare(q{INSERT INTO package (package_number,
+    package_state, package_location, package_contents,order_number) VALUES
+    (?, ?, ?, ?, ?)});
     
     $insert->execute($package->number, $package->state, $package->location, $package->contents, $key);
 
