@@ -21,6 +21,8 @@ use warnings FATAL => 'all';
 
 use UserHashRepository;
 use OrderHashRepository;
+use ItineraryRepository;
+use PackageRepository;
 use User;
 use Order;
 use Itinerary;
@@ -106,7 +108,8 @@ sub post_package {
         }
         if ($package) {
             $itinerary = Itinerary->new($ord_num, $location, $date, $description);
-            $package->add_itinerary($itinerary);
+            my $itinerary_repository = ItineraryRepository->new();
+            $itinerary_repository->add($itinerary);
             my $output = Output->new("Posta del paquete '$pkg_num' del Pedido '$ord_num' registrada");
             return $output;
         } else {
@@ -134,9 +137,11 @@ sub reception_package {
             }
         }
         if ($package) {
-            $itinerary = Itinerary->new($ord_num, $location, $date, "Recibido");
-            $package->add_itinerary($itinerary);
-            $package->set_state("Recibido");
+            $itinerary = Itinerary->new($pkg_num, $location, $date, ":)");
+            my $itinerary_repository = ItineraryRepository->new();
+            $itinerary_repository->add($itinerary);
+            my $repository_package = PackageRepository->new();
+            $repository_package->update($package->number, "Recibido");
             my $output = Output->new("Paquete '$pkg_num' del Pedido '$ord_num' recibido");
             return $output;
         } else {

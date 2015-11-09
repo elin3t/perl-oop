@@ -18,22 +18,23 @@
 use strict;
 use warnings;
 
-package Itinerary_Repository;
+package ItineraryRepository;
 use Repository;
 our @ISA = qw(Repository);
-use Data::Dumper;
-my $singleton;
 
-sub new {
-	my $class = shift;
-	return $class->SUPER::new("itinerary","itinerary_id");
-}
 
 sub add {
 	my $self = shift;
 	my $itinerary = shift;
-	print Dumper \$itinerary;
-	return $self->SUPER::add(-1, $itinerary->{number},  $itinerary->{location},$itinerary->{date},  $itinerary->{description}, 0);
+	my $dbh = $self->{'dbh'};
+	#print Dumper \$itinerary;
+	my $insert = $dbh->prepare(q{INSERT INTO itinerary (package_number,
+    itinerary_location, itinerary_date, itinerary_description)
+    VALUES
+    (?, ?, ?, ?)});
+
+	$insert->execute($itinerary->number, $itinerary->location, $itinerary->date,
+	$itinerary->description);
 }
 
 1; 
